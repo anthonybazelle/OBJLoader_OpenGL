@@ -1,0 +1,16 @@
+﻿  Input.cpp
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(170): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(171): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+  Génération de code en cours...
+  Compilation en cours...
+  Scene.cpp
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(65): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(70): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(85): warning C4305: 'argument' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(85): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+  Génération de code en cours...
+  Ignoré... (aucune modification pertinente détectée)
+  Main.cpp
+  Camera.cpp
+  ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe
+  ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.pdb (Full PDB)
