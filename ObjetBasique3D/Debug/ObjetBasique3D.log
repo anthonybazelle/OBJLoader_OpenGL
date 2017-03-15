@@ -1,14 +1,14 @@
-﻿La génération a démarré 09/03/2017 20:25:04.
-     1>Projet "C:\Users\User\Documents\ESGI\4A DJV\OPENGL\OBJ Loader\CC OpenGL\ObjetBasique3D\ObjetBasique3D.vcxproj" sur le nœud 2 (Build cible(s)).
+﻿La génération a démarré 15/03/2017 21:27:02.
+     1>Projet "C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\ObjetBasique3D\ObjetBasique3D.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I../config/freeglut/include/GL /I"../config/glew-2.0.0/include/GL" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt OBJLoader.cpp
          OBJLoader.cpp
-     1>c:\users\user\documents\esgi\4a djv\opengl\obj loader\cc opengl\common\mat4.h(28): error C3861: 'memset' : identificateur introuvable
-     1>c:\users\user\documents\esgi\4a djv\opengl\obj loader\cc opengl\common\mat4.h(35): error C3861: 'memset' : identificateur introuvable
-     1>c:\users\user\documents\esgi\4a djv\opengl\obj loader\cc opengl\common\mat4.h(98): error C3861: 'memset' : identificateur introuvable
-     1>c:\users\user\documents\esgi\4a djv\opengl\obj loader\cc opengl\common\mat4.h(118): error C3861: 'memset' : identificateur introuvable
-     1>Génération du projet "C:\Users\User\Documents\ESGI\4A DJV\OPENGL\OBJ Loader\CC OpenGL\ObjetBasique3D\ObjetBasique3D.vcxproj" terminée (Build cible(s)) -- ÉCHEC.
+     1>c:\users\user\documents\github\objloader_opengl\common\mat4.h(28): error C3861: 'memset' : identificateur introuvable
+     1>c:\users\user\documents\github\objloader_opengl\common\mat4.h(35): error C3861: 'memset' : identificateur introuvable
+     1>c:\users\user\documents\github\objloader_opengl\common\mat4.h(98): error C3861: 'memset' : identificateur introuvable
+     1>c:\users\user\documents\github\objloader_opengl\common\mat4.h(118): error C3861: 'memset' : identificateur introuvable
+     1>Génération du projet "C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\ObjetBasique3D\ObjetBasique3D.vcxproj" terminée (Build cible(s)) -- ÉCHEC.
 
 ÉCHEC de la build.
 
-Temps écoulé 00:00:00.26
+Temps écoulé 00:00:01.11
