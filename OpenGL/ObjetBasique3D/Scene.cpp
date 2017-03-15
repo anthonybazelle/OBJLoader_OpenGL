@@ -47,7 +47,7 @@ void Scene::initOpenGl(int argc, const char* argv)
 
 	g_BasicShader.LoadVertexShader("basic.vs");
 	g_BasicShader.LoadFragmentShader("basic.fs");
-	g_BasicShader.LoadGeometryShader("grid.gs");
+	//g_BasicShader.LoadGeometryShader("grid.gs");
 	g_BasicShader.CreateProgram();
 
 	glutDisplayFunc(Scene::drawCallBack);
@@ -88,7 +88,44 @@ void Scene::mainLoop()
 
 	//cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
 
-	grid->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+	//grid->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+
+
+	int TimeSinceAppStartedInMS = glutGet(GLUT_ELAPSED_TIME);
+	float TimeInSeconds = TimeSinceAppStartedInMS / 1000.0f;
+
+	Esgi::Mat4 translationMatrix;
+	translationMatrix.MakeTranslation(0.0f, 0.0f, -20.0f);
+
+	Esgi::Mat4 rotationMatrix;
+	rotationMatrix.Identity();
+	rotationMatrix.MakeRotationY(TimeInSeconds*72.0f);
+
+	//Esgi::Mat4 worldMatrix = translationMatrix.mult(rotationMatrix);
+	Esgi::Mat4 worldMatrix;
+	worldMatrix.Identity();
+
+	glUseProgram(g_BasicShader.GetProgram());
+
+
+	auto color_position = glGetAttribLocation(g_BasicShader.GetProgram(), "a_Color");
+	//glVertexAttrib3f(program, .0f, 1.f, .0f);
+	auto position_location = glGetAttribLocation(g_BasicShader.GetProgram(), "a_Position");
+
+	glVertexAttribPointer(position_location, 3, GL_FLOAT, GL_FALSE, 0, objVertices.data());
+	glEnableVertexAttribArray(position_location);
+
+	glVertexAttribPointer(color_position, 3, GL_FLOAT, GL_FALSE, 0, objUvs.data());
+	glEnableVertexAttribArray(color_position);
+
+
+	// Envoi des matrices
+	glUniformMatrix4fv(glGetUniformLocation(g_BasicShader.GetProgram(), "world"), 1, GL_FALSE, worldMatrix.m);
+	glUniformMatrix4fv(glGetUniformLocation(g_BasicShader.GetProgram(), "projection"), 1, GL_FALSE, projectionMatrix.m);
+	glUniformMatrix4fv(glGetUniformLocation(g_BasicShader.GetProgram(), "modelview"), 1, GL_FALSE, modelviewMatrix.m);
+
+	glUseProgram(0);
+
 
 	glutSwapBuffers();
 
@@ -137,6 +174,9 @@ Scene::Scene(int w, int h)
 	camera = new Camera(this, Esgi::Vec3(3, 3, 3), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
 	cube = new Cube(2);
 	grid = new Grid(10);
+
+	pObjLoader = new COBJLoader();
+	bool res = pObjLoader->LoadOBJ("../data/Monkey.obj", objVertices, objUvs, objNormals);
 
 }
 

@@ -38,7 +38,7 @@ bool EsgiShader::CreateProgram()
 	m_ProgramObject = glCreateProgram();
 	glAttachShader(m_ProgramObject, m_VertexShader);
 	glAttachShader(m_ProgramObject, m_FragmentShader);
-	glAttachShader(m_ProgramObject, m_GeometryShader);
+	//glAttachShader(m_ProgramObject, m_GeometryShader);
 	glLinkProgram(m_ProgramObject);
 	checkProgram(m_ProgramObject);
 	

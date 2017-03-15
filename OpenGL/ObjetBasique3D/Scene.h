@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Grid.h"
+#include "OBJLoader.h"
 
 // format des vertices : X, Y, Z, ?, ?, ?, ?, ? = 8 floats
 
@@ -42,6 +43,11 @@ class Scene
 	Camera *camera;
 	Cube *cube;
 	Grid *grid;
+
+	vector<Vector3> objVertices;
+	vector<Vector2> objUvs;
+	vector<Vector3> objNormals; 
+	COBJLoader* pObjLoader;
 
 public:
 	Camera* getCamera();
