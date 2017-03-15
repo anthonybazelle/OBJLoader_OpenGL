@@ -1,0 +1,18 @@
+﻿La génération a démarré 29/01/2017 10:49:59.
+     1>Projet "C:\Users\User\Documents\ESGI\4A DJV\OPENGL\CC\3\CC OpenGL\openglExo\openglExo.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"..\config\glew-1.11.0\include" /I..\config\freeglut\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\common\EsgiShader.cpp Main.cpp
+         Main.cpp
+         EsgiShader.cpp
+     1>c:\users\user\documents\esgi\4a djv\opengl\cc\3\cc opengl\common\esgishader.cpp(33): warning C4800: 'int' : valeur forcée à la valeur booléenne 'true' ou 'false' (avertissement sur les performances)
+     1>c:\users\user\documents\esgi\4a djv\opengl\cc\3\cc opengl\common\esgishader.cpp(71): warning C4800: 'int' : valeur forcée à la valeur booléenne 'true' ou 'false' (avertissement sur les performances)
+         Génération de code en cours...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\User\Documents\ESGI\4A DJV\OPENGL\CC\3\CC OpenGL\Debug\openglExo.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\User\Documents\ESGI\4A DJV\OPENGL\openglExo\config\glew-1.11.0\lib" /LIBPATH:"C:\Users\User\Documents\ESGI\4A DJV\OPENGL\openglExo\config\freeglut\lib" freeglut.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\User\Documents\ESGI\4A DJV\OPENGL\CC\3\CC OpenGL\Debug\openglExo.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\User\Documents\ESGI\4A DJV\OPENGL\CC\3\CC OpenGL\Debug\openglExo.lib" /MACHINE:X86 Debug\EsgiShader.obj
+         Debug\Main.obj
+         openglExo.vcxproj -> C:\Users\User\Documents\ESGI\4A DJV\OPENGL\CC\3\CC OpenGL\Debug\openglExo.exe
+     1>Génération du projet "C:\Users\User\Documents\ESGI\4A DJV\OPENGL\CC\3\CC OpenGL\openglExo\openglExo.vcxproj" terminée (Build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:02.38
