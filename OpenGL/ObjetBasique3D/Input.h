@@ -20,10 +20,10 @@ class Input
 	ButtonState* mouseButtons;
 	ButtonState letters[26];
 	Scene* scene;
-	bool mouseMove = false;
-	float mouseX=0, mouseY=0;
-	float relMouseX = 0, relMouseY = 0;
-	bool cameraCanMove = false;
+	bool mouseMove;
+	float mouseX, mouseY;
+	float relMouseX, relMouseY;
+	bool cameraCanMove;
 
 	static void keyboardCallBack(unsigned char  touche, int x, int y);
 	static void keyboardUpCallBack(unsigned char  touche, int x, int y);

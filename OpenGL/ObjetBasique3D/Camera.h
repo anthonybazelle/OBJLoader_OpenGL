@@ -32,12 +32,12 @@ public:
 
 private:
 	Scene *m_scene;
-	CameraState state = FREE;
+	CameraState state;
 	float m_phi;
 	float m_theta;
 	float m_realPhi;
 	float m_realTheta;
-	float m_savedTheta =0;
+	float m_savedTheta;
 	Esgi::Vec3 m_orientation;
 
 	Esgi::Vec3 m_axeVertical;

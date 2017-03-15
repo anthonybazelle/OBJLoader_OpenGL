@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Grid.h"
+#include "../common/shader.h"
 #include "OBJLoader.h"
 
 // format des vertices : X, Y, Z, ?, ?, ?, ?, ? = 8 floats
@@ -48,6 +49,11 @@ class Scene
 	vector<Vector2> objUvs;
 	vector<Vector3> objNormals; 
 	COBJLoader* pObjLoader;
+	Shader* pShader;
+	GLuint programID;
+	GLuint vertexbuffer;
+	GLuint uvbuffer;
+	GLuint normalbuffer;
 
 public:
 	Camera* getCamera();

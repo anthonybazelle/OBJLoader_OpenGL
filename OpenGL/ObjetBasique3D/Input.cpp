@@ -27,6 +27,10 @@ Input::Input(Scene *s)
 {
 	Input::currentInstance = this;
 	scene = s;
+	mouseX=0, mouseY=0;
+	mouseMove = false;
+	relMouseX = 0, relMouseY = 0;
+	cameraCanMove = false;
 	for (int i = 0; i < 26; i++)
 	{
 		letters[i] = NONE;

@@ -1,7 +1,27 @@
-﻿  Scene.cpp
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(66): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(71): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(86): warning C4305: 'argument' : troncation de 'double' à 'float'
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(86): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-  ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe
-  ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.pdb (Full PDB)
+﻿La génération a démarré 15/03/2017 23:43:31.
+     1>Projet "C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\OpenGL\ObjetBasique3D\ObjetBasique3D.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I../libs /I../libs/GL /I../libs/freeglut/include/GL /I"../libs/glew-2.0.0/include/GL" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Scene.cpp
+         Scene.cpp
+     1>c:\users\user\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(67): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+     1>c:\users\user\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(72): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+     1>c:\users\user\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(87): warning C4305: 'argument' : troncation de 'double' à 'float'
+     1>c:\users\user\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(87): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe" /INCREMENTAL /NOLOGO /LIBPATH:../libs/freeglut/lib /LIBPATH:"../libs/glew-2.0.0/lib/release/win32" freeglut.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.lib" /MACHINE:X86 Debug\EsgiShader.obj
+         Debug\mat4.obj
+         Debug\shader.obj
+         Debug\Camera.obj
+         Debug\Cube.obj
+         Debug\Grid.obj
+         Debug\Input.obj
+         Debug\Main.obj
+         Debug\OBJLoader.obj
+         Debug\Scene.obj
+         Debug\Vec3.obj
+         ObjetBasique3D.vcxproj -> C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe
+     1>Génération du projet "C:\Users\User\Documents\GitHub\OBJLoader_OpenGL\OpenGL\ObjetBasique3D\ObjetBasique3D.vcxproj" terminée (Build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:01.37

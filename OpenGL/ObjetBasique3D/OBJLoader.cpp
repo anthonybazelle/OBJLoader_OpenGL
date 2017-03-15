@@ -81,7 +81,7 @@ bool COBJLoader::LoadOBJ(const char * path, std::vector<Vector3> &out_vertices, 
 			{
 				unsigned int normalIndex = normalIndices[i];
 				Vector3 normal = temp_normals[normalIndex-1];
-				out_vertices.push_back(normal);
+				out_normals.push_back(normal);
 			}
 		}
 	}

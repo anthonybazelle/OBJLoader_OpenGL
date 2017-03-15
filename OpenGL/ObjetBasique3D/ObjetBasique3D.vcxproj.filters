@@ -54,6 +54,9 @@
     <ClCompile Include="OBJLoader.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\shader.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -83,12 +86,21 @@
     <ClInclude Include="OBJLoader.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\shader.h">
+      <Filter>Fichiers d%27en-tête\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basicLight.fs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="basicLight.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

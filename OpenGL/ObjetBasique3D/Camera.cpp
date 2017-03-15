@@ -10,6 +10,8 @@ Camera::Camera(Scene *s) : m_scene(s), m_phi(0.0), m_theta(0.0), m_orientation()
 Camera::Camera(Scene *s, Esgi::Vec3 position, Esgi::Vec3 pointCible, Esgi::Vec3 axeVertical) : m_scene(s), m_phi(0.0), m_theta(0.0), m_orientation(), m_axeVertical(axeVertical),
 m_deplacementLateral(), m_position(position), m_pointCible(pointCible)
 {
+	state = FREE;
+	m_savedTheta = 0;
 	m_savPointCible = pointCible;
 	setPointcible(pointCible);
 }
