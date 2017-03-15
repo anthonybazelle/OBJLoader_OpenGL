@@ -102,21 +102,21 @@ void Cube::afficher(Esgi::Mat4 &projection, Esgi::Mat4 &modelview, uint32_t shad
 	glEnableVertexAttribArray(color_position);
 
 
-        // Envoi des matrices
-		glUniformMatrix4fv(glGetUniformLocation(shaderId, "world"), 1, GL_FALSE, worldMatrix.m);
-        glUniformMatrix4fv(glGetUniformLocation(shaderId, "projection"), 1, GL_FALSE, projection.m);
-        glUniformMatrix4fv(glGetUniformLocation(shaderId, "modelview"), 1, GL_FALSE, modelview.m);
+    // Envoi des matrices
+	glUniformMatrix4fv(glGetUniformLocation(shaderId, "world"), 1, GL_FALSE, worldMatrix.m);
+    glUniformMatrix4fv(glGetUniformLocation(shaderId, "projection"), 1, GL_FALSE, projection.m);
+    glUniformMatrix4fv(glGetUniformLocation(shaderId, "modelview"), 1, GL_FALSE, modelview.m);
 
 
-        // Rendu
+    // Rendu
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
-        // Désactivation des tableaux
+    // Désactivation des tableaux
 
-        glDisableVertexAttribArray(color_position);
-        glDisableVertexAttribArray(position_location);
+    glDisableVertexAttribArray(color_position);
+    glDisableVertexAttribArray(position_location);
 
 
     // Désactivation du shader

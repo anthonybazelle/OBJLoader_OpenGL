@@ -47,6 +47,7 @@ void Scene::initOpenGl(int argc, const char* argv)
 
 	g_BasicShader.LoadVertexShader("basic.vs");
 	g_BasicShader.LoadFragmentShader("basic.fs");
+	g_BasicShader.LoadGeometryShader("grid.gs");
 	g_BasicShader.CreateProgram();
 
 	glutDisplayFunc(Scene::drawCallBack);
@@ -75,7 +76,7 @@ void Scene::mainLoop()
 	camera->deplacer(input);
 
 	glViewport(0, 0, width, height);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
@@ -85,7 +86,9 @@ void Scene::mainLoop()
 	projectionMatrix.Perspective(70.0, (double)width / height, 0.1, 1000.0);
 	camera->lookAt(modelviewMatrix);
 
-	cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+	//cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+
+	grid->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
 
 	glutSwapBuffers();
 
@@ -133,6 +136,7 @@ Scene::Scene(int w, int h)
 	input = new Input(this);
 	camera = new Camera(this, Esgi::Vec3(3, 3, 3), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
 	cube = new Cube(2);
+	grid = new Grid(10);
 
 }
 

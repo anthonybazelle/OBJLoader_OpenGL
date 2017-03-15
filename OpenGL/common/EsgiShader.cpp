@@ -38,6 +38,7 @@ bool EsgiShader::CreateProgram()
 	m_ProgramObject = glCreateProgram();
 	glAttachShader(m_ProgramObject, m_VertexShader);
 	glAttachShader(m_ProgramObject, m_FragmentShader);
+	glAttachShader(m_ProgramObject, m_GeometryShader);
 	glLinkProgram(m_ProgramObject);
 	checkProgram(m_ProgramObject);
 	
@@ -104,4 +105,21 @@ bool EsgiShader::LoadFragmentShader(const char* filename)
 	checkShader(m_FragmentShader);
 
 	return (m_FragmentShader != 0);
+}
+
+bool EsgiShader::LoadGeometryShader(const char* filename)
+{
+	FILE* file = fopen(filename, "rb");
+	fseek(file, 0, SEEK_END);
+	auto len = ftell(file);
+	rewind(file);
+	auto buffer = new char[len + 1];
+	fread(buffer, len, 1, file);
+	buffer[len] = '\0';
+	m_GeometryShader = CompileShader(GL_GEOMETRY_SHADER, buffer);
+	delete[] buffer;
+
+	checkShader(m_GeometryShader);
+
+	return (m_GeometryShader != 0);
 }

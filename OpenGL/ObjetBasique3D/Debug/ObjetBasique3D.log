@@ -1,16 +1,28 @@
-﻿  Input.cpp
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(170): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(171): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+﻿  Scene.cpp
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(66): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(71): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(86): warning C4305: 'argument' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(86): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+  Grid.cpp
+  EsgiShader.cpp
+d:\pc\documents\github\objloader_opengl\opengl\common\esgishader.cpp(33): warning C4800: 'int' : valeur forcée à la valeur booléenne 'true' ou 'false' (avertissement sur les performances)
+d:\pc\documents\github\objloader_opengl\opengl\common\esgishader.cpp(72): warning C4800: 'int' : valeur forcée à la valeur booléenne 'true' ou 'false' (avertissement sur les performances)
   Génération de code en cours...
   Compilation en cours...
-  Scene.cpp
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(65): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(70): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(85): warning C4305: 'argument' : troncation de 'double' à 'float'
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(85): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-  Génération de code en cours...
-  Ignoré... (aucune modification pertinente détectée)
   Main.cpp
+  Input.cpp
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(170): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(171): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
   Camera.cpp
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(69): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(70): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(120): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(179): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(180): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(196): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(199): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(204): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\camera.cpp(205): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+  Génération de code en cours...
   ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe
   ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.pdb (Full PDB)

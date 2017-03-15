@@ -17,6 +17,7 @@
 #include "Input.h"
 #include "Camera.h"
 #include "Cube.h"
+#include "Grid.h"
 
 // format des vertices : X, Y, Z, ?, ?, ?, ?, ? = 8 floats
 
@@ -40,6 +41,7 @@ class Scene
 	Input *input;
 	Camera *camera;
 	Cube *cube;
+	Grid *grid;
 
 public:
 	Camera* getCamera();

@@ -12,6 +12,7 @@ public:
 
 	bool LoadVertexShader(const char * filename);
 	bool LoadFragmentShader(const char* filename);
+	bool LoadGeometryShader(const char* filename);
 	uint32_t CompileShader(uint32_t type, const char* code);
 
 	bool CreateProgram();
@@ -23,6 +24,7 @@ private:
 	uint32_t m_ProgramObject;
 	uint32_t m_VertexShader;
 	uint32_t m_FragmentShader;
+	uint32_t m_GeometryShader;
 };
 
 #endif
