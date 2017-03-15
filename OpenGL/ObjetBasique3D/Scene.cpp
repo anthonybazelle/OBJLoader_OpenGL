@@ -28,6 +28,120 @@ void Scene::lauchOpenGLLoop()
 	glutMainLoop();
 }
 
+void Scene::menuCallBack(int i)
+{
+	Scene::currentInstance->menu(i);
+}
+
+
+void Scene::changeCamera()
+{
+
+}
+
+void Scene::hideShowGrid()
+{
+
+}
+
+void Scene::fillLineDraw()
+{
+
+}
+
+void Scene::backculling()
+{
+
+}
+
+void Scene::onOffTexture()
+{
+
+}
+
+void Scene::onOffIllumination()
+{
+
+}
+
+void Scene::lambert()
+{
+
+}
+
+void Scene::blinn()
+{
+
+}
+
+void Scene::blinnPhong()
+{
+
+}
+
+
+void Scene::createMenu()
+{
+
+	// ATTENDS JE SUIS AU TEL AVEC UN COLLEGUE
+	mainMenu = glutCreateMenu(Scene::menuCallBack);
+
+	glutAddMenuEntry("Exit", 0);
+	glutAddMenuEntry("Change camera        F", 1);
+	glutAddMenuEntry("Hide/Show grid       G", 2);
+	glutAddMenuEntry("Fill/Line draw       D", 3);
+	glutAddMenuEntry("On/Off backculling   C", 4);
+	glutAddMenuEntry("On/Off texture       T", 5);
+	glutAddMenuEntry("On/Off illumination  I", 6);
+	glutAddMenuEntry("Lambert              L", 7);
+	glutAddMenuEntry("Blinn                B", 8);
+	glutAddMenuEntry("Blinn-Phong          P", 9);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+// On traite ici le choix de l'utilisateur dans le menu contextuel
+void Scene::menu(int num) {
+	switch (num)
+	{
+	case 0:
+		glutDestroyWindow(windowId);
+		exit(0);
+		break;
+	case 1:
+		input->checkKeyboardInputs('f', 0, 0);
+		break;
+	case 2:
+		input->checkKeyboardInputs('g', 0, 0);
+		break;
+	case 3:
+		input->checkKeyboardInputs('d', 0, 0);
+		break;
+	case 4:
+		input->checkKeyboardInputs('c', 0, 0);
+		break;
+	case 5:
+		input->checkKeyboardInputs('t', 0, 0);
+		break;
+	case 6:
+		input->checkKeyboardInputs('i', 0, 0);
+		break;
+	case 7:
+		input->checkKeyboardInputs('l', 0, 0);
+		break;
+	case 8:
+		input->checkKeyboardInputs('b', 0, 0);
+		break;
+	case 9:
+		input->checkKeyboardInputs('p', 0, 0);
+		break;
+	default:
+		break;
+	}
+
+	glutPostRedisplay();
+}
+
 void Scene::initOpenGl(int argc, const char* argv)
 {
 
@@ -38,6 +152,8 @@ void Scene::initOpenGl(int argc, const char* argv)
 	glutInitWindowPosition(200, 100);
 	glutInitWindowSize(width, height);
 	windowId = glutCreateWindow("Controle continu"); 
+
+	createMenu();
 
 #ifdef FREEGLUT
 		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -87,12 +203,12 @@ void Scene::mainLoop()
 	projectionMatrix.Perspective(70.0, (double)width / height, 0.1, 1000.0);
 	camera->lookAt(modelviewMatrix);
 
-	//cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+	cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
 
 	//grid->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
 
 
-	int TimeSinceAppStartedInMS = glutGet(GLUT_ELAPSED_TIME);
+	/*int TimeSinceAppStartedInMS = glutGet(GLUT_ELAPSED_TIME);
 	float TimeInSeconds = TimeSinceAppStartedInMS / 1000.0f;
 
 	Esgi::Mat4 translationMatrix;
@@ -109,7 +225,7 @@ void Scene::mainLoop()
 	glUseProgram(programID);
 
 
-	glGenBuffers(1, &vertexbuffer);
+	glGenBuffers(1, &vertexbuffer); 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, objVertices.size() * sizeof(Vector3), &objVertices[0], GL_STATIC_DRAW);
 
@@ -184,7 +300,7 @@ void Scene::mainLoop()
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 
-	glUseProgram(0);
+	glUseProgram(0);*/
 
 
 	glutSwapBuffers();

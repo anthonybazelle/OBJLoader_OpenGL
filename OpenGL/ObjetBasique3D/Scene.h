@@ -53,7 +53,9 @@ class Scene
 	GLuint programID;
 	GLuint vertexbuffer;
 	GLuint uvbuffer;
-	GLuint normalbuffer;
+	GLuint normalbuffer; 
+	void menu(int num);
+	int mainMenu;
 
 public:
 	Camera* getCamera();
@@ -65,7 +67,18 @@ public:
 	float getHeight();
 	float getWidth();
 	Scene(int w, int h);
-	~Scene();
+	~Scene(); 
+	void createMenu();
+	static void menuCallBack(int i); 
+	void changeCamera();
+	void hideShowGrid();
+	void fillLineDraw();
+	void backculling();
+	void onOffTexture();
+	void onOffIllumination();
+	void lambert();
+	void blinn();
+	void blinnPhong();
 };
 
 #endif // ! SCENE
