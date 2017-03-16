@@ -25,7 +25,8 @@ public:
 	void setPointcible(Esgi::Vec3 pointCible);
 	void lookAt(Esgi::Mat4 &modelview);
 	void orienter(int xRel, int yRel);
-	void setState(CameraState s);
+	void setState(CameraState s); 
+	void calculateRadius();
 	
 	~Camera();
 
@@ -38,12 +39,15 @@ private:
 	float m_realPhi;
 	float m_realTheta;
 	float m_savedTheta;
+	float m_rotationTheta;
+	float m_radius;
 	Esgi::Vec3 m_orientation;
 
 	Esgi::Vec3 m_axeVertical;
 	Esgi::Vec3 m_deplacementLateral;
 
 	Esgi::Vec3 m_position;
+	Esgi::Vec3 m_firstPosition;
 	Esgi::Vec3 m_pointCible;
 	Esgi::Vec3 m_savPointCible;
 

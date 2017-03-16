@@ -8,12 +8,16 @@ Camera::Camera(Scene *s) : m_scene(s), m_phi(0.0), m_theta(0.0), m_orientation()
 }
 
 Camera::Camera(Scene *s, Esgi::Vec3 position, Esgi::Vec3 pointCible, Esgi::Vec3 axeVertical) : m_scene(s), m_phi(0.0), m_theta(0.0), m_orientation(), m_axeVertical(axeVertical),
-m_deplacementLateral(), m_position(position), m_pointCible(pointCible)
+m_deplacementLateral(), m_position(position), m_pointCible(pointCible), m_firstPosition(position)
 {
+	m_rotationTheta = 0;
 	state = FREE;
-	m_savedTheta = 0;
+	m_savedTheta = -1;
 	m_savPointCible = pointCible;
 	setPointcible(pointCible);
+	m_savedTheta = m_theta;
+	orienter(0, 0);
+	calculateRadius();
 }
 
 void Camera::setPointcible(Esgi::Vec3 pointCible)
@@ -119,7 +123,7 @@ void Camera::deplacer(Input* input)
 	if (input->mouseHasMove() )
 	{
 		//récupérer le mouse relatif à la dernière fois je penses
-		orienter(input->getRelMouseX(), input->getRelMouseY());
+		//orienter(input->getRelMouseX(), input->getRelMouseY());
 		input->SetMouseMove(false);
 	}
 		
@@ -132,6 +136,7 @@ void Camera::deplacer(Input* input)
 		m_position = Esgi::Vec3::addition(m_position , Esgi::Vec3::multiplication(m_orientation , coef));
 		if (state != ORBITALE)
 			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);
+		calculateRadius();
 	}
 
 
@@ -142,6 +147,7 @@ void Camera::deplacer(Input* input)
 		m_position = Esgi::Vec3::soustraction(m_position, Esgi::Vec3::multiplication(m_orientation, coef));
 		if (state != ORBITALE)
 			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);
+		calculateRadius();
 	}
 
 
@@ -149,21 +155,10 @@ void Camera::deplacer(Input* input)
 
 	if (input->isLetterPressed('q'))
 	{
-		float angle = -10 * 3.1416 / 180;
-		float X = m_position.getX() - m_pointCible.getX();
-		float Z = m_position.getZ() - m_pointCible.getZ();
-
-		float xBis = m_pointCible.getX() + X * cos(angle) - Z * sin(angle);
-		float zBis = m_pointCible.getZ() + X * sin(angle) + Z * cos(angle);
-
-		m_position.setX(xBis);
-		m_position.setZ(zBis);
-
-
-		orienter(input->getRelMouseX(), input->getRelMouseY());
-		/*m_position = Esgi::Vec3::addition(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
+		m_position = Esgi::Vec3::addition(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
 		if (state != ORBITALE)
-			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);*/
+			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);
+
 	}
 
 
@@ -171,23 +166,36 @@ void Camera::deplacer(Input* input)
 
 	if (input->isLetterPressed('d'))
 	{
+		/*float nb = -.1;
+		float nbRad = (nb) * M_PI / 180;
+		m_rotationTheta += nb;
+		float theta = m_rotationTheta * M_PI / 180;
+		float phi = 0;*/
 
-		float angle = 10 * 3.1416 / 180;
-		float X = m_position.getX() - m_pointCible.getX();
-		float Z = m_position.getZ() - m_pointCible.getZ();
+		/*float eyeX = m_pointCible.getX() + m_radius*cos(phi)*sin(theta);
+		float eyeY = m_pointCible.getY() + m_radius*sin(phi)*sin(theta);
+		float eyeZ = m_pointCible.getZ() + m_radius*cos(theta);
 
-		float xBis = m_pointCible.getX() + X * cos(angle) - Z * sin(angle);
-		float zBis = m_pointCible.getZ() + X * sin(angle) + Z * cos(angle);
-
-		m_position.setX(xBis);
-		m_position.setZ(zBis);
+		float eyeX = m_radius * -sinf(m_rotationTheta*(M_PI / 180)) * cosf((0)*(M_PI / 180));
+		float eyeY = m_radius * -sinf((0)*(M_PI / 180));
+		float eyeZ = -m_radius * cosf((m_rotationTheta)*(M_PI / 180)) * cosf((0)*(M_PI / 180));
 
 
-		orienter(input->getRelMouseX(), input->getRelMouseY());
+		m_position.setX(eyeX);
+		m_position.setY(eyeY);
+		m_position.setZ(eyeZ);*/
 
-		/*m_position = Esgi::Vec3::soustraction(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
+		/*float orientX = m_orientation.getX()*cos(nbRad) - m_orientation.getZ()*sin(nbRad);
+		float orientZ = m_orientation.getX()*sin(nbRad) + m_orientation.getZ()*cos(nbRad);
+		std::cout << "orientX=" << m_orientation.getX() << "CalculateX=" << orientX << std::endl;
+		std::cout << "orientZ=" << m_orientation.getZ() << "CalculateZ=" << orientZ << std::endl;
+		m_orientation.setX(orientX);
+		m_orientation.setZ(orientZ);
+		orienter(0, 0);*/
+
+		m_position = Esgi::Vec3::soustraction(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
 		if(state!=ORBITALE)
-			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);*/
+			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);
 	}
 }
 
@@ -195,6 +203,13 @@ Camera::~Camera()
 {
 }
 
+
+void Camera::calculateRadius()
+{
+	m_radius = sqrt((m_pointCible.getX() - m_position.getX())*(m_pointCible.getX() - m_position.getX())
+		+ (m_pointCible.getY() - m_position.getY())*(m_pointCible.getY() - m_position.getY())
+		+ (m_pointCible.getZ() - m_position.getZ())*(m_pointCible.getZ() - m_position.getZ()));
+}
 
 void Camera::orienter(int xRel, int yRel)
 {
@@ -218,14 +233,14 @@ void Camera::orienter(int xRel, int yRel)
 	else if (m_phi < -89.0)
 		m_phi = -89.0;
 
-	if (state == FPS)
+	/*if (state == FPS)
 	{
 		if (m_theta > m_savedTheta+89.0)
 			m_theta = m_savedTheta + 89.0;
 
 		else if (m_theta < m_savedTheta -89.0)
 			m_theta = m_savedTheta - 89.0;
-	}
+	}*/
 
 	// Conversion des angles en radian
 
