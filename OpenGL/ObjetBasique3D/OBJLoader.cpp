@@ -10,6 +10,121 @@ COBJLoader::~COBJLoader(void)
 {
 }
 
+string get_directory(string s)
+{
+    string s1="",s2="";
+    for(unsigned int i=0;i<s.size();i++)
+    {
+        if(s[i]=='/'||s[i]=='\\')
+        {
+			std::string s3(s2.c_str() + '/');
+            s1 += s3;
+            s2="";
+        }
+        else
+            s2+=s[i];
+    }
+    return s1;
+}
+
+vector<string> splitSpace(string s)
+{
+    vector<string> ret;
+
+    string s1="";
+
+    for(unsigned int i=0;i<s.size();i++)
+	{
+        if(s[i]==' '||i==s.size()-1)
+		{
+            if(i==s.size()-1)
+                s1+=s[i];
+            ret.push_back(s1);
+            s1="";
+        }
+        else
+            s1+=s[i];
+    }
+    return ret;
+}
+
+
+void COBJLoader::extractMTLdata(string fp)
+{/*
+    int m = 0;
+    int d = 0;
+    int s = 0;
+    int a = 0;*/
+
+	string* materials = new string[1];
+    ifstream inMTL;
+    inMTL.open(fp);
+    if(!inMTL.good())
+    {
+        cout << "ERROR OPENING MTL FILE" << endl;
+        exit(1);
+    }
+    
+    while(!inMTL.eof())
+    {
+        string line;
+        getline(inMTL, line);
+        string type = line.substr(0,2);
+        
+        // Nom material
+        if(type.compare("ne") == 0)
+        {
+            string l = "newmtl ";
+            materials[0] = line.substr(l.size());
+            //m++;
+        }
+
+		// Ambiantes
+        else if(type.compare("Ka") == 0)
+        {
+            char* l = new char[line.size()+1];
+            memcpy(l, line.c_str(), line.size()+1);
+            
+            strtok(l, " ");
+            for(int i=0; i<3; i++)
+                ambiants[i] = atof(strtok(NULL, " "));
+            
+            delete[] l;
+            //d++;
+        }
+        
+        // Diffuses
+        else if(type.compare("Kd") == 0)
+        {
+            char* l = new char[line.size()+1];
+            memcpy(l, line.c_str(), line.size()+1);
+            
+            strtok(l, " ");
+            for(int i=0; i<3; i++)
+                diffuses[i] = atof(strtok(NULL, " "));
+            
+            delete[] l;
+            //d++;
+        }
+        
+        // Speculaires
+        else if(type.compare("Ks") == 0)
+        {
+            char* l = new char[line.size()+1];
+            memcpy(l, line.c_str(), line.size()+1);
+            
+            strtok(l, " ");
+            for(int i=0; i<3; i++)
+                speculars[i] = atof(strtok(NULL, " "));
+            
+            delete[] l;
+            //s++;
+        }
+    }
+    
+    inMTL.close();
+}
+
 bool COBJLoader::LoadOBJ(const char * path, std::vector<Vector3> &out_vertices, std::vector<Vector2> &out_uvs, std::vector<Vector3> &out_normals)
 {
 	FILE * file = fopen(path, "r");
@@ -84,5 +199,15 @@ bool COBJLoader::LoadOBJ(const char * path, std::vector<Vector3> &out_vertices, 
 				out_normals.push_back(normal);
 			}
 		}
+		else if(strcmp( lineHeader, "mtllib" ) == 0 )
+		{//fichier MTL et si c'est la première frame (comme ça on ne charge pas plusieurs fois le même MTL et la même texture)
+			string s = "";
+			//fscanf(file, "%s\n", &s);
+			extractMTLdata("cylinder.mtl");
+		}/*
+		else if(strcmp( lineHeader, "u" ) == 0 )//utiliser un MTL
+		{
+			curname=ligne.substr(7);
+		}*/
 	}
 }

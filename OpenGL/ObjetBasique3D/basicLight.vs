@@ -17,8 +17,19 @@ uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
 uniform vec3 LightPosition_worldspace;
+uniform vec3 Ka;
+uniform vec3 Kd;
+uniform vec3 Ks;
+
+out vec3 ambiant;
+out vec3 specular;
+out vec3 diffuse;
 
 void main(void){
+
+	ambiant = Ka;
+	specular = Ks;
+	diffuse = Kd;
 
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);

@@ -20,6 +20,7 @@
 #include "Grid.h"
 #include "../common/shader.h"
 #include "OBJLoader.h"
+#include "texture.h"
 
 // format des vertices : X, Y, Z, ?, ?, ?, ?, ? = 8 floats
 
@@ -39,7 +40,8 @@ class Scene
 	GLuint VBO;	// identifiant du Vertex Buffer Object
 	GLuint IBO;	// identifiant du Index Buffer Object
 	GLuint TexObj; // identifiant du Texture Object
-
+	GLuint TextureID;
+	GLuint Texture;
 	Input *input;
 	Camera *camera;
 	Cube *cube;
@@ -57,6 +59,10 @@ class Scene
 	GLuint normalbuffer; 
 	void menu(int num);
 	int mainMenu;
+
+	bool bCulling;
+	bool bTexture;
+	int bLight;
 
 public:
 	Camera* getCamera();
