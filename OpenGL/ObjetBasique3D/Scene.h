@@ -53,6 +53,7 @@ class Scene
 	GLuint programID;
 	GLuint vertexbuffer;
 	GLuint uvbuffer;
+	GLuint LightID;
 	GLuint normalbuffer; 
 	void menu(int num);
 	int mainMenu;

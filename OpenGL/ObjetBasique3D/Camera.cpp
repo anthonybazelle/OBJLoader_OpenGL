@@ -149,9 +149,21 @@ void Camera::deplacer(Input* input)
 
 	if (input->isLetterPressed('q'))
 	{
-		m_position = Esgi::Vec3::addition(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
+		float angle = -10 * 3.1416 / 180;
+		float X = m_position.getX() - m_pointCible.getX();
+		float Z = m_position.getZ() - m_pointCible.getZ();
+
+		float xBis = m_pointCible.getX() + X * cos(angle) - Z * sin(angle);
+		float zBis = m_pointCible.getZ() + X * sin(angle) + Z * cos(angle);
+
+		m_position.setX(xBis);
+		m_position.setZ(zBis);
+
+
+		orienter(input->getRelMouseX(), input->getRelMouseY());
+		/*m_position = Esgi::Vec3::addition(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
 		if (state != ORBITALE)
-			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);
+			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);*/
 	}
 
 
@@ -159,9 +171,23 @@ void Camera::deplacer(Input* input)
 
 	if (input->isLetterPressed('d'))
 	{
-		m_position = Esgi::Vec3::soustraction(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
+
+		float angle = 10 * 3.1416 / 180;
+		float X = m_position.getX() - m_pointCible.getX();
+		float Z = m_position.getZ() - m_pointCible.getZ();
+
+		float xBis = m_pointCible.getX() + X * cos(angle) - Z * sin(angle);
+		float zBis = m_pointCible.getZ() + X * sin(angle) + Z * cos(angle);
+
+		m_position.setX(xBis);
+		m_position.setZ(zBis);
+
+
+		orienter(input->getRelMouseX(), input->getRelMouseY());
+
+		/*m_position = Esgi::Vec3::soustraction(m_position, Esgi::Vec3::multiplication(m_deplacementLateral, coef));
 		if(state!=ORBITALE)
-			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);
+			m_pointCible = Esgi::Vec3::addition(m_position, m_orientation);*/
 	}
 }
 

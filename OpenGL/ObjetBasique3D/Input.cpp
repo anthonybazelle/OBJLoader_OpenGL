@@ -121,6 +121,52 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 	if (nb<0 || nb>25)
 		return ;
 	letters[nb] = PRESSED;
+
+	switch (touche)
+	{
+	case 'c':
+		std::cout << "Change camera " << std::endl;
+		scene->changeCamera();
+		glutPostRedisplay();
+		break;
+	case 'g':
+		std::cout << "Hide/Show grid" << std::endl;
+		scene->hideShowGrid();
+		glutPostRedisplay();
+		break;
+	case 'n':
+		std::cout << "Fill/Line draw" << std::endl;
+		scene->fillLineDraw();
+		glutPostRedisplay();
+		break;
+	case 'v':
+		std::cout << "On/Off backculling" << std::endl;
+		scene->backculling();
+		break;
+	case 't':
+		std::cout << "On/Off texture" << std::endl;
+		scene->onOffTexture();
+		break;
+	case 'i':
+		std::cout << "On/Off illumination" << std::endl;
+		scene->onOffIllumination();
+		break;
+	case 'l':
+		std::cout << "Lambert" << std::endl;
+		scene->lambert();
+		glutPostRedisplay();
+		break;
+	case 'b':
+		std::cout << "Blinn" << std::endl;
+		scene->blinn();
+		break;
+	case 'p':
+		std::cout << "Blinn-Phong" << std::endl;
+		scene->blinnPhong();
+		break;
+	default:
+		break;
+	}
 	
 }
 
@@ -134,7 +180,7 @@ void Input::checkKeyboardUpInputs(unsigned char  touche, int x, int y)
 	else
 		letters[nb] = CLICKED;
 
-	if (touche == 'w')
+	/*if (touche == 'w')
 	{
 		scene->getCamera()->setState(FREE);
 		std::cout << "Etat camera : '" << "FREE" << "'" << std::endl;
@@ -149,7 +195,8 @@ void Input::checkKeyboardUpInputs(unsigned char  touche, int x, int y)
 	{
 		scene->getCamera()->setState(ORBITALE);
 		std::cout << "Etat camera : '" << "ORBITALE" << "'" << std::endl;
-	}
+	}*/
+
 		
 
 }

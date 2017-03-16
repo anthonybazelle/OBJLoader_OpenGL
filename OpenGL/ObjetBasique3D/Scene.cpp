@@ -1,6 +1,5 @@
 #include "Scene.h"
 
-
 Scene* Scene::currentInstance = nullptr;
 
 void Scene::drawCallBack()
@@ -87,10 +86,10 @@ void Scene::createMenu()
 	mainMenu = glutCreateMenu(Scene::menuCallBack);
 
 	glutAddMenuEntry("Exit", 0);
-	glutAddMenuEntry("Change camera        F", 1);
+	glutAddMenuEntry("Change camera        C", 1);
 	glutAddMenuEntry("Hide/Show grid       G", 2);
-	glutAddMenuEntry("Fill/Line draw       D", 3);
-	glutAddMenuEntry("On/Off backculling   C", 4);
+	glutAddMenuEntry("Fill/Line draw       N", 3);
+	glutAddMenuEntry("On/Off backculling   V", 4);
 	glutAddMenuEntry("On/Off texture       T", 5);
 	glutAddMenuEntry("On/Off illumination  I", 6);
 	glutAddMenuEntry("Lambert              L", 7);
@@ -109,16 +108,16 @@ void Scene::menu(int num) {
 		exit(0);
 		break;
 	case 1:
-		input->checkKeyboardInputs('f', 0, 0);
+		input->checkKeyboardInputs('c', 0, 0);
 		break;
 	case 2:
 		input->checkKeyboardInputs('g', 0, 0);
 		break;
 	case 3:
-		input->checkKeyboardInputs('d', 0, 0);
+		input->checkKeyboardInputs('n', 0, 0);
 		break;
 	case 4:
-		input->checkKeyboardInputs('c', 0, 0);
+		input->checkKeyboardInputs('v', 0, 0);
 		break;
 	case 5:
 		input->checkKeyboardInputs('t', 0, 0);
@@ -153,24 +152,26 @@ void Scene::initOpenGl(int argc, const char* argv)
 	glutInitWindowSize(width, height);
 	windowId = glutCreateWindow("Controle continu"); 
 
-	createMenu();
-
 #ifdef FREEGLUT
 		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 #endif
 
 	glewInit();
-	pShader = new Shader();
-	programID = pShader->LoadShaders( "shader.vs", "shader.fs" );
-	g_BasicShader.LoadVertexShader("basic.vs");
-	g_BasicShader.LoadFragmentShader("basic.fs");
-	//g_BasicShader.LoadGeometryShader("grid.gs");
-	g_BasicShader.CreateProgram();
-
 	glutDisplayFunc(Scene::drawCallBack);
 	glutIdleFunc(Scene::updateCallBack);
 
 	input->init();
+
+	pObjLoader = new COBJLoader();
+	g_BasicShader.LoadVertexShader("basicLight.vs");
+	g_BasicShader.LoadFragmentShader("basicLight.fs");
+	//g_BasicShader.LoadGeometryShader("grid.gs");
+	g_BasicShader.CreateProgram();
+	programID = g_BasicShader.GetProgram();
+	bool res = pObjLoader->LoadOBJ("../data/suzanne.obj", objVertices, objUvs, objNormals);
+
+	glUseProgram(programID);
+	LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
 }
 
 void Scene::update()
@@ -193,6 +194,8 @@ void Scene::mainLoop()
 	camera->deplacer(input);
 
 	glViewport(0, 0, width, height);
+
+			// Clear the screen
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -203,12 +206,124 @@ void Scene::mainLoop()
 	projectionMatrix.Perspective(70.0, (double)width / height, 0.1, 1000.0);
 	camera->lookAt(modelviewMatrix);
 
-	cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+	//cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
 
 	//grid->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
 
 
-	/*int TimeSinceAppStartedInMS = glutGet(GLUT_ELAPSED_TIME);
+	int TimeSinceAppStartedInMS = glutGet(GLUT_ELAPSED_TIME);
+	float TimeInSeconds = TimeSinceAppStartedInMS / 1000.0f;
+
+	Esgi::Mat4 translationMatrix;
+	translationMatrix.MakeTranslation(0.0f, 0.0f, -20.0f);
+
+	Esgi::Mat4 rotationMatrix;
+	rotationMatrix.Identity();
+	rotationMatrix.MakeRotationY(TimeInSeconds*72.0f);
+
+	//Esgi::Mat4 worldMatrix = translationMatrix.mult(rotationMatrix);
+	Esgi::Mat4 worldMatrix;
+	worldMatrix.Identity();
+	// Use our shader
+	glUseProgram(programID);
+
+	// Compute the MVP matrix from keyboard and mouse input
+	//computeMatricesFromInputs();
+	Mat4 ProjectionMatrix = projectionMatrix;
+	Mat4 ViewMatrix = modelviewMatrix;
+	Mat4 ModelMatrix = worldMatrix;
+	Mat4 MVP = (ProjectionMatrix.mult(ViewMatrix)).mult(ModelMatrix);
+
+	// Send our transformation to the currently bound shader, 
+	// in the "MVP" uniform
+	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
+	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
+	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, MVP.m);
+	glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, worldMatrix.m);
+	glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, modelviewMatrix.m);
+
+	Vector3 lightPos;
+	lightPos.x = 4;
+	lightPos.y = 4;
+	lightPos.z = 4;
+
+	glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
+
+	// Bind our texture in Texture Unit 0
+//		glActiveTexture(GL_TEXTURE0);
+//		glBindTexture(GL_TEXTURE_2D, Texture);
+	// Set our "myTextureSampler" sampler to user Texture Unit 0
+//		glUniform1i(TextureID, 0);
+
+	// 1rst attribute buffer : vertices
+	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	glEnableVertexAttribArray(vertexPosition_modelspace);
+	//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(
+		vertexPosition_modelspace,                  // attribute
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		objVertices.data()           // array buffer offset
+	);
+
+	// 2nd attribute buffer : UVs
+	auto vertexUV = glGetAttribLocation(programID, "vertexUV");
+	glEnableVertexAttribArray(vertexUV);
+	//glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glVertexAttribPointer(
+		vertexUV,                                // attribute
+		2,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		objUvs.data()                         // array buffer offset
+	);
+
+	// 3rd attribute buffer : normals
+	auto vertexNormal_modelspace = glGetAttribLocation(programID, "vertexNormal_modelspace");
+	glEnableVertexAttribArray(vertexNormal_modelspace);
+	//glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glVertexAttribPointer(
+		vertexNormal_modelspace,                                // attribute
+		3,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		objNormals.data()                    // array buffer offset
+	);
+
+	// Draw the triangles !
+	glDrawArrays(GL_TRIANGLES, 0, objVertices.size() );
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	glUseProgram(0);
+
+	glutSwapBuffers();
+
+	//glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+	/*
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	Esgi::Mat4 projectionMatrix, modelviewMatrix;
+	modelviewMatrix.Identity();
+
+	projectionMatrix.Perspective(70.0, (double)width / height, 0.1, 1000.0);
+	camera->lookAt(modelviewMatrix);
+
+	//cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+
+	//grid->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
+
+
+	int TimeSinceAppStartedInMS = glutGet(GLUT_ELAPSED_TIME);
 	float TimeInSeconds = TimeSinceAppStartedInMS / 1000.0f;
 
 	Esgi::Mat4 translationMatrix;
@@ -222,10 +337,10 @@ void Scene::mainLoop()
 	Esgi::Mat4 worldMatrix;
 	worldMatrix.Identity();
 
-	glUseProgram(programID);
+	glUseProgram(g_BasicShader.GetProgram());
 
 
-	glGenBuffers(1, &vertexbuffer); 
+	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, objVertices.size() * sizeof(Vector3), &objVertices[0], GL_STATIC_DRAW);
 
@@ -248,9 +363,9 @@ void Scene::mainLoop()
 	glVertexAttribPointer(color_position, 3, GL_FLOAT, GL_FALSE, 0, objUvs.data());
 	glEnableVertexAttribArray(color_position);
 
-	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
-	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+	GLuint MatrixID = glGetUniformLocation(g_BasicShader.GetProgram(), "MVP");
+	GLuint ViewMatrixID = glGetUniformLocation(g_BasicShader.GetProgram(), "V");
+	GLuint ModelMatrixID = glGetUniformLocation(g_BasicShader.GetProgram(), "M");
 
 	// Envoi des matrices
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, worldMatrix.m);
@@ -299,13 +414,8 @@ void Scene::mainLoop()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
-
-	glUseProgram(0);*/
-
-
-	glutSwapBuffers();
-
-
+	*/
+	
 	/*float g_tab[] = {
 		-0.7f, -.5f,
 		1.0f,  0.0f,  0.0f,
@@ -335,10 +445,8 @@ void Scene::mainLoop()
 	glEnableVertexAttribArray(position_location);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glDisableVertexAttribArray(position_location);
-	
-	glUseProgram(0);
+	*/
 
-	glutSwapBuffers();*/
 }
 
 Scene::Scene(int w, int h)
@@ -350,10 +458,6 @@ Scene::Scene(int w, int h)
 	camera = new Camera(this, Esgi::Vec3(3, 3, 3), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
 	cube = new Cube(2);
 	grid = new Grid(10);
-
-	pObjLoader = new COBJLoader();
-	bool res = pObjLoader->LoadOBJ("../data/suzanne.obj", objVertices, objUvs, objNormals);
-	int i =0;
 }
 
 Scene::~Scene()
@@ -363,7 +467,7 @@ Scene::~Scene()
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
 	glDeleteBuffers(1, &normalbuffer);
-	glDeleteProgram(programID);
+	//glDeleteProgram(programID);
 	g_BasicShader.GetProgram();
 	glDeleteTextures(1, &TexObj);
 	glDeleteBuffers(1, &IBO);
