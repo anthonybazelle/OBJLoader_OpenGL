@@ -11,6 +11,14 @@ enum RegisteredKey {
 	AVANT, ARRIERE, GAUCHE, DROITE
 };
 
+enum Transformation {
+	TRANSLATION, ROTATION, SCALE, NO_TRANS
+};
+
+enum State {
+	ENTER_POLYGON, ENTER_WINDOW, DRAW, FILL, COLOR
+};
+
 class Scene;
 
 class Input

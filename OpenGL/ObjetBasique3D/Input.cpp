@@ -151,19 +151,6 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 		std::cout << "On/Off illumination" << std::endl;
 		scene->onOffIllumination();
 		break;
-	case 'l':
-		std::cout << "Lambert" << std::endl;
-		scene->lambert();
-		glutPostRedisplay();
-		break;
-	case 'b':
-		std::cout << "Blinn" << std::endl;
-		scene->blinn();
-		break;
-	case 'p':
-		std::cout << "Blinn-Phong" << std::endl;
-		scene->blinnPhong();
-		break;
 	default:
 		break;
 	}

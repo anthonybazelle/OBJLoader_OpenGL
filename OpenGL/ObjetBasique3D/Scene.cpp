@@ -76,22 +76,6 @@ void Scene::onOffIllumination()
 		bLight = 1;
 }
 
-void Scene::lambert()
-{
-
-}
-
-void Scene::blinn()
-{
-
-}
-
-void Scene::blinnPhong()
-{
-
-}
-
-
 void Scene::createMenu()
 {
 
@@ -99,15 +83,11 @@ void Scene::createMenu()
 	mainMenu = glutCreateMenu(Scene::menuCallBack);
 
 	glutAddMenuEntry("Exit", 0);
-	//glutAddMenuEntry("Change camera        C", 1);
+	glutAddMenuEntry("Change camera        C", 1);
 	glutAddMenuEntry("Hide/Show grid       G", 2);
 	glutAddMenuEntry("Fill/Line draw       N", 3);
 	glutAddMenuEntry("On/Off backculling   V", 4);
-	//glutAddMenuEntry("On/Off texture       T", 5);
 	glutAddMenuEntry("On/Off illumination  I", 6);
-	/*glutAddMenuEntry("Lambert              L", 7);
-	glutAddMenuEntry("Blinn                B", 8);
-	glutAddMenuEntry("Blinn-Phong          P", 9);*/
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -290,61 +270,61 @@ void Scene::mainLoop()
 	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	glEnableVertexAttribArray(vertexPosition_modelspace);
 
-	int nbLines = 10;
+	int nbLines = 16;
 	int espace = 1;
 	int sizeGrid = nbLines * 4;
 
 	Vector3 *grid;
 	grid = (Vector3*) malloc(sizeGrid * sizeof(Vector3));
 
-		glVertexAttribPointer(
-			vertexPosition_modelspace,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			grid
-		);
-		int x = -nbLines / 2;
-		for (int i = 0; i < nbLines*2; i++)
+	glVertexAttribPointer(
+		vertexPosition_modelspace,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		0,
+		grid);
+
+	int x = -nbLines / 2;
+	for (int i = 0; i < nbLines*2; i++)
+	{
+		Vector3 v;
+		if (i % 2 == 0)
 		{
-			Vector3 v;
-			if (i % 2 == 0)
-			{
-				v.x = x;
-				v.y = nbLines / 2;
-				v.z = 0;
-				grid[i] = v;
-			}
-			else
-			{
-				v.x = x;
-				v.y = -nbLines / 2;
-				v.z = 0;
-				grid[i] = v;
-				x+= espace;
-			}
+			v.x = x;
+			v.y = nbLines / 2;
+			v.z = 0;
+			grid[i] = v;
 		}
-		int y = -nbLines / 2;
-		for (int i = nbLines*2; i < nbLines*4; i++)
+		else
 		{
-			Vector3 v;
-			if (i % 2 == 0)
-			{
-				v.y = y;
-				v.x = nbLines / 2;
-				v.z = 0;
-				grid[i] = v;
-			}
-			else
-			{
-				v.y = y;
-				v.x = -nbLines / 2;
-				v.z = 0;
-				grid[i] = v;
-				y+= espace;
-			}
+			v.x = x;
+			v.y = -nbLines / 2;
+			v.z = 0;
+			grid[i] = v;
+			x+= espace;
 		}
+	}
+	int y = -nbLines / 2;
+	for (int i = nbLines*2; i < nbLines*4; i++)
+	{
+		Vector3 v;
+		if (i % 2 == 0)
+		{
+			v.y = y;
+			v.x = nbLines / 2;
+			v.z = 0;
+			grid[i] = v;
+		}
+		else
+		{
+			v.y = y;
+			v.x = -nbLines / 2;
+			v.z = 0;
+			grid[i] = v;
+			y+= espace;
+		}
+	}
 	
 	
 	/*glVertexAttribPointer(
@@ -394,9 +374,240 @@ void Scene::mainLoop()
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 
+
+	//draw poly
+
+	/*glUseProgram(0);
+
+	glViewport(0, 0, width, height);
+	glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+
+	auto program = g_BasicShader.GetProgram();
+	glUseProgram(program);
+
+	auto color_position = glGetAttribLocation(program, "a_Color");
+	auto position_location = glGetAttribLocation(program, "a_Position");
+
+
+	GLuint colorID = glGetUniformLocation(program, "myColor");
+	glUniform4f(colorID, color[0], color[1], color[2], color[3]);*/
+
+
+	/*if (state == DRAW)
+	{
+		if (!polygons->empty())
+		{
+			for (int i = 0; i < polygons->size(); i++)
+			{
+				polygons->at(i).recalculateBezierPoints(width, height);
+
+				const maths::Point *bezierPoints = polygons->at(i).getBezierPoints()->data();
+				unsigned int bezierSize = polygons->at(i).getBezierPoints()->size();
+
+				//if (i == polygonSelected)
+					//glUniform4f(colorID, 1.0, 0.0, 0.0, 1.0);
+				//else
+				//glUniform4f(colorID, color[0], color[1], color[2], color[3]);
+
+
+				glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, bezierPoints);
+				glEnableVertexAttribArray(vertexPosition_modelspace);
+
+				glPointSize(5);
+
+				glDrawArrays(GL_LINE_STRIP, 0, bezierSize);
+				glDisableVertexAttribArray(vertexPosition_modelspace);
+
+				if (pointSelected != -1 && i == polygonSelected)
+				{
+					const maths::Point *points = polygons->at(i).getPoints()->data();
+					unsigned int size = pointSelected;
+
+					glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, points);
+					glEnableVertexAttribArray(vertexPosition_modelspace);
+					glPointSize(5);
+					glDrawArrays(GL_POINTS, 0, size);
+					glDisableVertexAttribArray(vertexPosition_modelspace);
+
+					//glUniform4f(colorID, 0.0, 1.0, 0.0, 1.0);
+					size = 1;
+
+					glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, &points[pointSelected]);
+					glEnableVertexAttribArray(vertexPosition_modelspace);
+					glPointSize(5);
+					glDrawArrays(GL_POINTS, 0, size);
+					glDisableVertexAttribArray(vertexPosition_modelspace);
+
+					//glUniform4f(colorID, 1.0, 0.0, 0.0, 1.0);
+					size = polygons->at(i).getPoints()->size() - pointSelected - 1;
+
+					if (size > 0)
+					{
+						glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, &points[pointSelected + 1]);
+						glEnableVertexAttribArray(vertexPosition_modelspace);
+						glPointSize(5);
+						glDrawArrays(GL_POINTS, 0, size);
+						glDisableVertexAttribArray(vertexPosition_modelspace);
+					}
+				}
+				else
+				{
+					const maths::Point *points = polygons->at(i).getPoints()->data();
+					unsigned int size = polygons->at(i).getPoints()->size();
+
+					glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, points);
+					glEnableVertexAttribArray(vertexPosition_modelspace);
+
+					glPointSize(5);
+
+					glDrawArrays(GL_POINTS, 0, size);
+					glDisableVertexAttribArray(vertexPosition_modelspace);
+				}
+			}
+		}
+
+	}
+
+	else if (state == ENTER_POLYGON)
+	{
+
+		for (int i = 0; i < polygons->size() - 1; i++)
+		{
+			//polygons->at(i).recalculateBezierPoints();
+
+			const maths::Point *bezierPoints = polygons->at(i).getBezierPoints()->data();
+			unsigned int bezierSize = polygons->at(i).getBezierPoints()->size();
+
+			glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, bezierPoints);
+			glEnableVertexAttribArray(vertexPosition_modelspace);
+
+			glPointSize(5);
+
+			glDrawArrays(GL_LINE_STRIP, 0, bezierSize);
+			glDisableVertexAttribArray(vertexPosition_modelspace);
+
+			const maths::Point *points = polygons->at(i).getPoints()->data();
+			unsigned int size = polygons->at(i).getPoints()->size();
+
+			glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, points);
+			glEnableVertexAttribArray(vertexPosition_modelspace);
+
+			glPointSize(5);
+
+			glDrawArrays(GL_POINTS, 0, size);
+			glDisableVertexAttribArray(vertexPosition_modelspace);
+		}
+
+		const maths::Point *points = polygons->back().getPoints()->data();
+		unsigned int size = polygons->back().getPoints()->size();
+
+		for (int i = 0; i < size; i++)
+		{
+			glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, &points[i]);
+			glEnableVertexAttribArray(vertexPosition_modelspace);
+
+			glPointSize(10);
+
+			glDrawArrays(GL_POINTS, 0, 1);
+			glDisableVertexAttribArray(vertexPosition_modelspace);
+		}
+	}*/
+
 	glUseProgram(0);
 
 	glutSwapBuffers();
+}
+
+void Scene::scalePoint(maths::Polygon *poly, float ratio)
+{
+	float pivotX = 0;
+	float pivotY = 0;
+
+	int nbPoints = poly->getPoints()->size();
+
+	for (int i = 0; i < nbPoints; i++)
+	{
+		pivotX += poly->getPoints()->at(i).x;
+		pivotY += poly->getPoints()->at(i).y;
+	}
+
+	pivotX = pivotX / nbPoints;
+	pivotY = pivotY / nbPoints;
+
+	// TODO : Test ratio
+
+	for (int i = 0; i <poly->getPoints()->size(); i++)
+	{
+		maths::Point p = poly->getPoints()->at(i);
+		// application formule
+		maths::Point p2;
+		p2.x = p.x - pivotX;
+		p2.y = p.y - pivotY;
+
+		p2.x *= ratio;
+		p2.y *= ratio;
+
+		p.x = pivotX + p2.x;
+		p.y = pivotY + p2.y;
+
+		poly->setPoint(p, i);
+	}
+
+}
+
+void Scene::translatePoint(maths::Polygon *poly, float translateX, float translateY)
+{
+	for (int i = 0; i <poly->getPoints()->size(); i++)
+	{
+		maths::Point p = poly->getPoints()->at(i);
+		// application formule
+		p.x = p.x + translateX;
+		p.y = p.y + translateY;
+
+		poly->setPoint(p, i);
+	}
+}
+
+void Scene::rotate_point(maths::Polygon *poly, float angle)
+{
+	float s = sin(angle);
+	float c = cos(angle);
+
+	// On calcul la moyenne des coordonnées des sommets du polygon
+	float pivotX = 0;
+	float pivotY = 0;
+
+	int nbPoints = poly->getPoints()->size();
+
+	for (int i = 0; i < nbPoints; i++)
+	{
+		pivotX += poly->getPoints()->at(i).x;
+		pivotY += poly->getPoints()->at(i).y;
+	}
+
+	pivotX = pivotX / nbPoints;
+	pivotY = pivotY / nbPoints;
+
+	for (int i = 0; i <poly->getPoints()->size(); i++)
+	{
+		maths::Point p = poly->getPoints()->at(i);
+		// application formule
+		p.x -= pivotX;
+		p.y -= pivotY;
+
+		// rotation du point
+		float xnew = p.x * c - p.y * s;
+		float ynew = p.x * s + p.y * c;
+
+		p.x = xnew + pivotX;
+		p.y = ynew + pivotY;
+
+		poly->setPoint(p, i);
+	}
+
+
 }
 
 Scene::Scene(int w, int h)
@@ -405,12 +616,72 @@ Scene::Scene(int w, int h)
 	width = w;
 	Scene::currentInstance = this;
 	input = new Input(this);
-	camera = new Camera(this, Esgi::Vec3(3, 3, 3), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
+	int distY = width / 2 / 35;
+
+	camera = new Camera(this, Esgi::Vec3(0, 0, -distY), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
 	cube = new Cube(2);
 	grid = new Grid(10);
 	bCulling = false;
 	bTexture = false;
 	bLine = false;
+
+	pointSelected = -1;
+	polygonSelected = -1;
+	polygons = new std::vector<maths::Polygon>();
+	activeTransformation = NO_TRANS;
+}
+
+void Scene::changeState(State s)
+{
+	if (state == s)
+		return;
+	state = s;
+	switch (state)
+	{
+	case ENTER_POLYGON:
+		polygons->push_back(*(new maths::Polygon()));
+		break;
+		break;
+	case DRAW:
+		break;
+	default:
+		break;
+	}
+}
+
+State Scene::getState()
+{
+	return state;
+}
+
+void Scene::addPoint(maths::Point p)
+{
+	switch (state)
+	{
+	case ENTER_POLYGON:
+		if (!polygons->empty())
+		{
+			//std::cout << "point added x=" << p.x << " y=" << p.y << std::endl;
+			p.y = height - p.y;
+			p.x -= width / 2;
+			p.y -= height / 2;
+			p.x /= width / 2;
+			p.y /= height / 2;
+			//std::cout << "point normalized x=" << p.x << " y=" << p.y << std::endl;
+
+			polygons->back().addPoint(p);
+		}
+		break;
+	case DRAW:
+		break;
+	case FILL:
+		break;
+	case COLOR:
+		break;
+	default:
+		break;
+	}
+
 }
 
 Scene::~Scene()

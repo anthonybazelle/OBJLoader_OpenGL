@@ -22,6 +22,10 @@
 #include "OBJLoader.h"
 #include "texture.h"
 
+
+#include "Polygon.h"
+#include "Math.h"
+
 // format des vertices : X, Y, Z, ?, ?, ?, ?, ? = 8 floats
 
 class Scene
@@ -65,6 +69,12 @@ class Scene
 	int bLight;
 	int bLine;
 
+	std::vector<maths::Polygon> *polygons; 
+	int polygonSelected;
+	int pointSelected;
+	Transformation activeTransformation;
+	State state;
+
 public:
 	Camera* getCamera();
 	Input* getInput();
@@ -84,9 +94,16 @@ public:
 	void backculling();
 	void onOffTexture();
 	void onOffIllumination();
-	void lambert();
-	void blinn();
-	void blinnPhong();
+
+
+	void addPoint(maths::Point p);
+	void rotate_point(maths::Polygon *poly, float angle);
+	void scalePoint(maths::Polygon *poly, float ratio);
+	void translatePoint(maths::Polygon *poly, float translateX, float translateY);
+
+
+	void changeState(State state);
+	State getState();
 };
 
 #endif // ! SCENE
