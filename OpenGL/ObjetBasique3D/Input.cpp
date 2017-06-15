@@ -245,7 +245,7 @@ void Input::checkMouseClicks(int button, int state, int x, int y)
 			}
 			else
 			{
-				if (scene->isPointSelected(mouseX, mouseY))
+				if (scene->isPointSelected(x, y))
 				{
 					std::cout << "point selected" << std::endl;
 				}
@@ -297,22 +297,16 @@ void Input::checkMouseMoves(int x, int y)
 
 	mouseMove = true;
 
-	float mX = x;
-	float mY = y;
-
 	float width = scene->getWidth();
 	float height = scene->getHeight();
 
-	mX -= width / 2;
-	mX /= width / 2;
-	mY = height - mY;
-	mY -= height / 2;
-	mY /= height / 2;
-	mX = Math::round(mX);
-	mY = Math::round(mY);
+	x -= width / 2;
+	y -= height / 2;
+	x = -x;
+	y = -y;
 
-	mouseX = mX;
-	mouseY = mY;
+	mouseX = x;
+	mouseY = y;
 
 	if (scene->hasSelectedPoint())
 		scene->moveSelectedPoint(mouseX, mouseY);

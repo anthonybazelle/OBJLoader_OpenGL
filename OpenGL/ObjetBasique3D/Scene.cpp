@@ -197,7 +197,7 @@ float Scene::getWidth()
 
 void Scene::mainLoop()
 {
-	camera->deplacer(input);
+	//camera->deplacer(input);
 
 	glViewport(0, 0, width, height);
 
@@ -602,8 +602,6 @@ bool Scene::isPointSelected(float mX, float mY)
 	if (state == DRAW)
 	{
 		float nb = 10;
-		float nbX = nb / width;
-		float nbY = nb / height;
 
 		std::cout << "mx = " << mX << "  mY=" << mY << std::endl;
 		for (int i = 0; i < polygons->size(); i++)
@@ -613,7 +611,7 @@ bool Scene::isPointSelected(float mX, float mY)
 				maths::Point p = polygons->at(i).getPoints()->at(j);
 
 				std::cout << "x=" << p.x << "   y=" << p.y << std::endl;
-				if (mX > p.x - nbX && mX<p.x + nbX && mY>p.y - nbY && mY < p.y + nbY)
+				if (mX > p.x - nb && mX<p.x + nb && mY>p.y - nb && mY < p.y + nb)
 				{
 					if (polygonSelected == i)
 					{
@@ -640,6 +638,7 @@ void Scene::moveSelectedPoint(float x, float y)
 	maths::Point p;
 	p.x = x;
 	p.y = y;
+	p.z = 0;
 	polygons->at(polygonSelected).setPoint(p, pointSelected);
 	glutPostRedisplay();
 }
