@@ -25,6 +25,7 @@
 
 #include "Polygon.h"
 #include "Math.h"
+#include <math.h>
 
 // format des vertices : X, Y, Z, ?, ?, ?, ?, ? = 8 floats
 
@@ -74,6 +75,7 @@ class Scene
 	int pointSelected;
 	Transformation activeTransformation;
 	State state;
+	int angleCamera;
 
 public:
 	Camera* getCamera();

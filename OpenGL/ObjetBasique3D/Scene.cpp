@@ -209,7 +209,7 @@ void Scene::mainLoop()
 	Esgi::Mat4 projectionMatrix, modelviewMatrix;
 	modelviewMatrix.Identity();
 
-	projectionMatrix.Perspective(70.0, (double)width / height, 0.1, 1000.0);
+	projectionMatrix.Perspective(angleCamera, (double)width / height, 0.1, 1000.0);
 	camera->lookAt(modelviewMatrix);
 
 	//cube->afficher(projectionMatrix, modelviewMatrix, g_BasicShader.GetProgram());
@@ -281,8 +281,8 @@ void Scene::mainLoop()
 	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	glEnableVertexAttribArray(vertexPosition_modelspace);
 
-	int nbLines = 16;
-	int espace = 1;
+	int nbLines = 8;
+	int espace = 100;
 	int sizeGrid = nbLines * 4;
 
 	Vector3 *grid;
@@ -296,41 +296,41 @@ void Scene::mainLoop()
 		0,
 		grid);
 
-	int x = -nbLines / 2;
+	int x = -nbLines / 2 * espace;
 	for (int i = 0; i < nbLines*2; i++)
 	{
 		Vector3 v;
 		if (i % 2 == 0)
 		{
 			v.x = x;
-			v.y = nbLines / 2;
+			v.y = nbLines / 2* espace;
 			v.z = 0;
 			grid[i] = v;
 		}
 		else
 		{
 			v.x = x;
-			v.y = -nbLines / 2;
+			v.y = -nbLines / 2 * espace;
 			v.z = 0;
 			grid[i] = v;
 			x+= espace;
 		}
 	}
-	int y = -nbLines / 2;
+	int y = -nbLines / 2 * espace;
 	for (int i = nbLines*2; i < nbLines*4; i++)
 	{
 		Vector3 v;
 		if (i % 2 == 0)
 		{
 			v.y = y;
-			v.x = nbLines / 2;
+			v.x = nbLines / 2 * espace;
 			v.z = 0;
 			grid[i] = v;
 		}
 		else
 		{
 			v.y = y;
-			v.x = -nbLines / 2;
+			v.x = -nbLines / 2 * espace;
 			v.z = 0;
 			grid[i] = v;
 			y+= espace;
@@ -381,9 +381,9 @@ void Scene::mainLoop()
 
 	glDrawArrays(GL_LINES, 0, sizeGrid);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(vertexPosition_modelspace);
+	//glDisableVertexAttribArray(1);
+	//glDisableVertexAttribArray(2);
 
 
 	//draw poly
@@ -767,8 +767,9 @@ Scene::Scene(int w, int h)
 	width = w;
 	Scene::currentInstance = this;
 	input = new Input(this);
-	int distY = width / 2 / 35;
+	float distY = width / 2.f * 1;
 
+	std::cout << "distance camera =" << distY << std::endl;
 	camera = new Camera(this, Esgi::Vec3(0, 0, -distY), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
 	cube = new Cube(2);
 	grid = new Grid(10);
@@ -781,6 +782,7 @@ Scene::Scene(int w, int h)
 	polygons = new std::vector<maths::Polygon>();
 	activeTransformation = NO_TRANS;
 	state = DRAW;
+	angleCamera = 90;
 }
 
 void Scene::changeState(State s)
@@ -814,11 +816,7 @@ void Scene::addPoint(maths::Point p)
 		if (!polygons->empty())
 		{
 			//std::cout << "point added x=" << p.x << " y=" << p.y << std::endl;
-			p.y = height - p.y;
-			p.x -= width / 2;
-			p.y -= height / 2;
-			p.x /= width / 2;
-			p.y /= height / 2;
+			
 			//std::cout << "point normalized x=" << p.x << " y=" << p.y << std::endl;
 
 			polygons->back().addPoint(p);

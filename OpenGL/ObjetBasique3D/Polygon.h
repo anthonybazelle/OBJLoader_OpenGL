@@ -62,7 +62,6 @@ namespace maths
 		std::vector<maths::Point>* getPoints();
 		std::vector<maths::Point>* getBezierPoints();
 		void recalculateBezierPoints(int w, int h);
-		void recalculateBezierPointsCoxDeBoor();
 		void changeBezierRecursion(int nb);
 		int factorial(int n);
 		float binomial_coff(float n, float k);

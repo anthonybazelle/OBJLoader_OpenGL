@@ -35,6 +35,10 @@ Input::Input(Scene *s)
 	{
 		letters[i] = NONE;
 	}
+
+	mouseButtons = new ButtonState[3];
+	for (int i = 0; i < 3; i++)
+		mouseButtons[i] = NONE;
 }
 
 
@@ -53,6 +57,7 @@ void Input::init()
 	mouseX = scene->getWidth()/2;
 	mouseY = scene->getHeight()/2;
 	mouseMove = true;
+
 }
 
 bool Input::mouseHasMove()
@@ -222,6 +227,12 @@ void Input::checkKeyboardUpInputs(unsigned char  touche, int x, int y)
 
 void Input::checkMouseClicks(int button, int state, int x, int y)
 {
+	int width = scene->getWidth();
+	int height = scene->getHeight();
+	x -= width / 2;
+	y -= height / 2;
+	x = -x;
+	y = -y;
 	State sceneState = scene->getState();
 	if (sceneState == DRAW && button == GLUT_LEFT_BUTTON)
 	{
@@ -254,6 +265,7 @@ void Input::checkMouseClicks(int button, int state, int x, int y)
 	}
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && (sceneState == ENTER_POLYGON || sceneState == ENTER_WINDOW)) {
 		maths::Point p;
+		std::cout << "clic x=" << x << "  y=" << y << endl;
 		p.x = x;
 		p.y = y;
 		p.z = 0;

@@ -187,7 +187,7 @@ void maths::Polygon::recalculateBezierPoints(int width, int height)
 	for (double t = 0.0; t <= 1.0; t += step)
 	{
 		Point p2 = calculateBezierPoints( t);
-
+		p2.z = 0.f;
 		bezierPoints->push_back(p2);
 		p1 = p2;
 	}
