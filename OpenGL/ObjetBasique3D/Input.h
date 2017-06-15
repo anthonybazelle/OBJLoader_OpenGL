@@ -16,7 +16,7 @@ enum Transformation {
 };
 
 enum State {
-	ENTER_POLYGON, ENTER_WINDOW, DRAW, FILL, COLOR
+	ENTER_POLYGON, ENTER_WINDOW, DRAW, FILL, COLOR, CAMERA3D
 };
 
 class Scene;
