@@ -63,6 +63,7 @@ class Scene
 	bool bCulling;
 	bool bTexture;
 	int bLight;
+	int bLine;
 
 public:
 	Camera* getCamera();

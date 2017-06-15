@@ -120,12 +120,12 @@ void Camera::deplacer(Input* input)
 
 	float coef = .1f;
 
-	if (input->mouseHasMove() )
+	/*if (input->mouseHasMove() )
 	{
 		//récupérer le mouse relatif à la dernière fois je penses
-		//orienter(input->getRelMouseX(), input->getRelMouseY());
+		orienter(input->getRelMouseX(), input->getRelMouseY());
 		input->SetMouseMove(false);
-	}
+	}*/
 		
 
 

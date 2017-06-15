@@ -45,7 +45,7 @@ void Scene::hideShowGrid()
 
 void Scene::fillLineDraw()
 {
-
+	bLine = !bLine;
 }
 
 void Scene::backculling()
@@ -99,15 +99,15 @@ void Scene::createMenu()
 	mainMenu = glutCreateMenu(Scene::menuCallBack);
 
 	glutAddMenuEntry("Exit", 0);
-	glutAddMenuEntry("Change camera        C", 1);
+	//glutAddMenuEntry("Change camera        C", 1);
 	glutAddMenuEntry("Hide/Show grid       G", 2);
 	glutAddMenuEntry("Fill/Line draw       N", 3);
 	glutAddMenuEntry("On/Off backculling   V", 4);
-	glutAddMenuEntry("On/Off texture       T", 5);
+	//glutAddMenuEntry("On/Off texture       T", 5);
 	glutAddMenuEntry("On/Off illumination  I", 6);
-	glutAddMenuEntry("Lambert              L", 7);
+	/*glutAddMenuEntry("Lambert              L", 7);
 	glutAddMenuEntry("Blinn                B", 8);
-	glutAddMenuEntry("Blinn-Phong          P", 9);
+	glutAddMenuEntry("Blinn-Phong          P", 9);*/
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -168,7 +168,9 @@ void Scene::initOpenGl(int argc, const char* argv)
 #ifdef FREEGLUT
 		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 #endif
-	CreateMenu();
+	createMenu();
+
+
 	glewInit();
 	glutDisplayFunc(Scene::drawCallBack);
 	glutIdleFunc(Scene::updateCallBack);
@@ -237,7 +239,7 @@ void Scene::mainLoop()
 	//Esgi::Mat4 worldMatrix = translationMatrix.mult(rotationMatrix);
 	Esgi::Mat4 worldMatrix;
 	worldMatrix.Identity();
-	worldMatrix.MakeRotationY(TimeInSeconds*72.0f);
+	//worldMatrix.MakeRotationY(TimeInSeconds*72.0f);
 	// Use our shader
 	glUseProgram(programID);
 
@@ -270,7 +272,7 @@ void Scene::mainLoop()
 		// Set our "myTextureSampler" sampler to user Texture Unit 0
 		glUniform1i(TextureID, 0);
 	}
-	glUniform3f(KaID, pObjLoader->ambiants[0], pObjLoader->ambiants[1], pObjLoader->ambiants[2]);
+	/*glUniform3f(KaID, pObjLoader->ambiants[0], pObjLoader->ambiants[1], pObjLoader->ambiants[2]);
 	glUniform3f(KdID, pObjLoader->diffuses[0], pObjLoader->diffuses[1], pObjLoader->diffuses[2]);
 	glUniform3f(KsID, pObjLoader->speculars[0], pObjLoader->speculars[1], pObjLoader->speculars[2]);
 
@@ -283,20 +285,77 @@ void Scene::mainLoop()
 
 	GLuint boolLight = glGetUniformLocation(programID, "bLight");
 	glUniform1i(boolLight, bLight);
-
+	*/
 	// 1rst attribute buffer : vertices
 	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	glEnableVertexAttribArray(vertexPosition_modelspace);
+
+	int nbLines = 10;
+	int espace = 1;
+	int sizeGrid = nbLines * 4;
+
+	Vector3 *grid;
+	grid = (Vector3*) malloc(sizeGrid * sizeof(Vector3));
+
+		glVertexAttribPointer(
+			vertexPosition_modelspace,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			grid
+		);
+		int x = -nbLines / 2;
+		for (int i = 0; i < nbLines*2; i++)
+		{
+			Vector3 v;
+			if (i % 2 == 0)
+			{
+				v.x = x;
+				v.y = nbLines / 2;
+				v.z = 0;
+				grid[i] = v;
+			}
+			else
+			{
+				v.x = x;
+				v.y = -nbLines / 2;
+				v.z = 0;
+				grid[i] = v;
+				x+= espace;
+			}
+		}
+		int y = -nbLines / 2;
+		for (int i = nbLines*2; i < nbLines*4; i++)
+		{
+			Vector3 v;
+			if (i % 2 == 0)
+			{
+				v.y = y;
+				v.x = nbLines / 2;
+				v.z = 0;
+				grid[i] = v;
+			}
+			else
+			{
+				v.y = y;
+				v.x = -nbLines / 2;
+				v.z = 0;
+				grid[i] = v;
+				y+= espace;
+			}
+		}
 	
-	glVertexAttribPointer(
+	
+	/*glVertexAttribPointer(
 		vertexPosition_modelspace,                  
 		3,                  
 		GL_FLOAT,           
 		GL_FALSE,           
 		0,                 
 		objVertices.data()           
-	);
-
+	);*/
+	/*
 	// 2nd attribute buffer : UVs
 	auto vertexUV = glGetAttribLocation(programID, "vertexUV");
 	glEnableVertexAttribArray(vertexUV);
@@ -321,10 +380,15 @@ void Scene::mainLoop()
 		GL_FALSE,                         
 		0,                                
 		objNormals.data()                    
-	);
+	);*/
 
 	// Draw the triangles !
-	glDrawArrays(GL_TRIANGLES, 0, objVertices.size() );
+	/*if(bLine)
+		glDrawArrays(GL_LINES, 0, objVertices.size());
+	else
+		glDrawArrays(GL_TRIANGLES, 0, objVertices.size() );*/
+
+	glDrawArrays(GL_LINES, 0, sizeGrid);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -346,6 +410,7 @@ Scene::Scene(int w, int h)
 	grid = new Grid(10);
 	bCulling = false;
 	bTexture = false;
+	bLine = false;
 }
 
 Scene::~Scene()

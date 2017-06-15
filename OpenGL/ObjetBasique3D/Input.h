@@ -34,9 +34,9 @@ public:
 	Input(Scene *scene);
 	~Input();
 	void init();
-	bool mouseHasMove();
 	float getRelMouseX();
 	float getRelMouseY();
+	bool mouseHasMove();
 	bool isLetterPressed(char letter);
 	bool isLetterPressed(RegisteredKey key);
 	bool isLetterClicked(char letter);

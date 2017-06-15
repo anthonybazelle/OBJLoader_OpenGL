@@ -30,7 +30,7 @@ Input::Input(Scene *s)
 	mouseX=0, mouseY=0;
 	mouseMove = false;
 	relMouseX = 0, relMouseY = 0;
-	cameraCanMove = false;
+	cameraCanMove = true;
 	for (int i = 0; i < 26; i++)
 	{
 		letters[i] = NONE;

@@ -201,8 +201,10 @@ bool COBJLoader::LoadOBJ(const char * path, std::vector<Vector3> &out_vertices, 
 		}
 		else if(strcmp( lineHeader, "mtllib" ) == 0 )
 		{//fichier MTL et si c'est la première frame (comme ça on ne charge pas plusieurs fois le même MTL et la même texture)
-			string s = "";
-			//fscanf(file, "%s\n", &s);
+			
+			char c[1024];
+			fscanf(file, "%s", &c);
+			string s(c);
 			extractMTLdata("cylinder.mtl");
 		}/*
 		else if(strcmp( lineHeader, "u" ) == 0 )//utiliser un MTL
