@@ -104,6 +104,16 @@ public:
 
 	void changeState(State state);
 	State getState();
+	void changeActiveTransformation(Transformation trans);
+	void applyTransformation(char key);
+	void linkOtherCurve();
+	void changeBezierRecursion(int nb);
+
+	bool hasSelectedPoint();
+	bool isPointSelected(float mX, float mY);
+	void unselectPoint();
+	void moveSelectedPoint(float x, float y);
+
 };
 
 #endif // ! SCENE

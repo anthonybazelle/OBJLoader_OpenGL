@@ -1,19 +1,39 @@
 ﻿  Scene.cpp
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(179): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(184): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(201): warning C4305: 'argument' : troncation de 'double' à 'float'
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(201): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(294): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(295): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(301): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(302): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(314): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(315): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(321): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(322): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(541): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(562): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(593): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(621): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(190): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(195): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(212): warning C4305: 'argument' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(212): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(305): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(306): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(312): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(313): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(325): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(326): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(332): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(333): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(413): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(487): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(517): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(548): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(554): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(556): warning C4305: '=' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(609): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(611): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(667): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(692): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(713): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(744): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(772): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  Input.cpp
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(257): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(258): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(282): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(283): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(288): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\input.cpp(289): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+  Génération de code en cours...
+  Ignoré... (aucune modification pertinente détectée)
+  Main.cpp
+  Camera.cpp
   ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe
   ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.pdb (Full PDB)

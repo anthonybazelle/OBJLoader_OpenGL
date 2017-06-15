@@ -83,11 +83,28 @@ void Scene::createMenu()
 	mainMenu = glutCreateMenu(Scene::menuCallBack);
 
 	glutAddMenuEntry("Exit", 0);
-	glutAddMenuEntry("Change camera        C", 1);
-	glutAddMenuEntry("Hide/Show grid       G", 2);
-	glutAddMenuEntry("Fill/Line draw       N", 3);
-	glutAddMenuEntry("On/Off backculling   V", 4);
-	glutAddMenuEntry("On/Off illumination  I", 6);
+	glutAddMenuEntry("Add curve             A", 1);
+	glutAddMenuEntry("End edition           E", 2);
+	glutAddMenuEntry("Activate translation  W", 3);
+	glutAddMenuEntry("Activate rotation     X", 4);
+	glutAddMenuEntry("Activate scale        C", 5);
+	glutAddMenuEntry("Unactivate all        V", 6);
+	glutAddMenuEntry("Link other curve      L", 7);
+	/*glutAddMenuEntry("Cut               C", 3);
+	glutAddMenuEntry("Fill polygon(s)   F", 4);
+	glutAddMenuEntry("Set window        Q", 5);
+	glutAddMenuEntry("Select polygon(s) W", 6);
+	glutAddMenuEntry("Hide/Show window  P", 7);*/
+	/*
+	if (stackPolygonClicked->size() != 0)
+	{
+	glutAddMenuEntry("Fill           F", 4);
+	}
+	*/
+	/*if (isInPolygon)
+	{
+	glutAddMenuEntry("Coloring polygon", 5);
+	}*/
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -101,31 +118,25 @@ void Scene::menu(int num) {
 		exit(0);
 		break;
 	case 1:
-		input->checkKeyboardInputs('c', 0, 0);
+		input->checkKeyboardInputs('a', 0, 0);
 		break;
 	case 2:
-		input->checkKeyboardInputs('g', 0, 0);
+		input->checkKeyboardInputs('e', 0, 0);
 		break;
 	case 3:
-		input->checkKeyboardInputs('n', 0, 0);
+		input->checkKeyboardInputs('w', 0, 0);
 		break;
 	case 4:
-		input->checkKeyboardInputs('v', 0, 0);
+		input->checkKeyboardInputs('x', 0, 0);
 		break;
 	case 5:
-		input->checkKeyboardInputs('t', 0, 0);
+		input->checkKeyboardInputs('c', 0, 0);
 		break;
 	case 6:
-		input->checkKeyboardInputs('i', 0, 0);
+		input->checkKeyboardInputs('v', 0, 0);
 		break;
 	case 7:
 		input->checkKeyboardInputs('l', 0, 0);
-		break;
-	case 8:
-		input->checkKeyboardInputs('b', 0, 0);
-		break;
-	case 9:
-		input->checkKeyboardInputs('p', 0, 0);
 		break;
 	default:
 		break;
@@ -395,7 +406,7 @@ void Scene::mainLoop()
 	glUniform4f(colorID, color[0], color[1], color[2], color[3]);*/
 
 
-	/*if (state == DRAW)
+	if (state == DRAW)
 	{
 		if (!polygons->empty())
 		{
@@ -513,11 +524,151 @@ void Scene::mainLoop()
 			glDrawArrays(GL_POINTS, 0, 1);
 			glDisableVertexAttribArray(vertexPosition_modelspace);
 		}
-	}*/
+	}
 
 	glUseProgram(0);
 
 	glutSwapBuffers();
+}
+
+void Scene::changeActiveTransformation(Transformation trans)
+{
+	activeTransformation = trans;
+}
+
+void Scene::applyTransformation(char key)
+{
+	if (polygonSelected != -1 && pointSelected == -1)
+	{
+		if (activeTransformation == ROTATION)
+		{
+			int coef = 1;
+			if (key == 'd')
+				coef = -coef;
+			rotate_point(&polygons->at(polygonSelected), coef*3.1416 / 180);
+			glutPostRedisplay();
+
+		}
+		else if (activeTransformation == SCALE)
+		{
+			float coef = 1.1;
+			if (key == 's')
+				coef = 0.9;
+
+			scalePoint(&polygons->at(polygonSelected), coef);
+			glutPostRedisplay();
+		}
+		else if (activeTransformation == TRANSLATION)
+		{
+			float coef = 10;
+			float x = 0, y = 0;
+			if (key == 'z')
+				y = 1;
+			else if (key == 'q')
+				x = -1;
+			else if (key == 's')
+				y = -1;
+			else if (key == 'd')
+				x = 1;
+
+			translatePoint(&polygons->at(polygonSelected), x / width* coef, y / height* coef);
+			glutPostRedisplay();
+		}
+	}
+
+}
+
+void Scene::linkOtherCurve()
+{
+	if (polygonSelected != -1 && pointSelected == -1)
+	{
+		maths::Polygon p1 = polygons->at(polygonSelected);
+		if (p1.getOutPolygon() == NULL)
+		{
+			changeState(ENTER_POLYGON);
+			maths::Polygon p2 = polygons->at(polygons->size() - 1);
+
+			polygons->at(polygonSelected).setOutPolygon(&polygons->at(polygons->size() - 1));
+			polygons->at(polygons->size() - 1).setInPolygon(&polygons->at(polygonSelected));
+
+			p2.addPoint(p1.getPoints()->at((p1.getPoints()->size() - 1)));
+		}
+
+	}
+}
+
+bool Scene::isPointSelected(float mX, float mY)
+{
+	if (state == DRAW)
+	{
+		float nb = 10;
+		float nbX = nb / width;
+		float nbY = nb / height;
+
+		std::cout << "mx = " << mX << "  mY=" << mY << std::endl;
+		for (int i = 0; i < polygons->size(); i++)
+		{
+			for (int j = 0; j < polygons->at(i).getPoints()->size(); j++)
+			{
+				maths::Point p = polygons->at(i).getPoints()->at(j);
+
+				std::cout << "x=" << p.x << "   y=" << p.y << std::endl;
+				if (mX > p.x - nbX && mX<p.x + nbX && mY>p.y - nbY && mY < p.y + nbY)
+				{
+					if (polygonSelected == i)
+					{
+						pointSelected = j;
+					}
+					else
+					{
+						pointSelected = -1;
+						polygonSelected = i;
+					}
+					return true;
+				}
+			}
+		}
+	}
+	pointSelected = -1;
+	polygonSelected = -1;
+
+	return false;
+}
+
+void Scene::moveSelectedPoint(float x, float y)
+{
+	maths::Point p;
+	p.x = x;
+	p.y = y;
+	polygons->at(polygonSelected).setPoint(p, pointSelected);
+	glutPostRedisplay();
+}
+
+
+void Scene::unselectPoint()
+{
+	pointSelected = -1;
+	polygonSelected = -1;
+}
+
+bool Scene::hasSelectedPoint()
+{
+	return (polygonSelected != -1 && pointSelected != -1);
+}
+
+void Scene::changeBezierRecursion(int nb)
+{
+	if (polygonSelected != -1)
+	{
+		polygons->at(polygonSelected).changeBezierRecursion(nb);
+	}
+	else
+	{
+		for (int i = 0; i < polygons->size(); i++)
+		{
+			polygons->at(i).changeBezierRecursion(nb);
+		}
+	}
 }
 
 void Scene::scalePoint(maths::Polygon *poly, float ratio)
@@ -629,6 +780,7 @@ Scene::Scene(int w, int h)
 	polygonSelected = -1;
 	polygons = new std::vector<maths::Polygon>();
 	activeTransformation = NO_TRANS;
+	state = DRAW;
 }
 
 void Scene::changeState(State s)

@@ -124,32 +124,64 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 
 	switch (touche)
 	{
+	case 'a':
+		std::cout << "change state : ENTER_POINTS" << std::endl;
+		scene->changeState(ENTER_POLYGON);
+		glutPostRedisplay();
+		break;
+	case 'e':
+		std::cout << "change state : DRAW" << std::endl;
+		scene->changeState(DRAW);
+		glutPostRedisplay();
+		break;
+	case 'w':
+		std::cout << "ACTIVATE TRANSLATION" << std::endl;
+		scene->changeActiveTransformation(TRANSLATION);
+		glutPostRedisplay();
+		break;
+	case 'x':
+		std::cout << "ACTIVATE ROTATION" << std::endl;
+		scene->changeActiveTransformation(ROTATION);
+		glutPostRedisplay();
+		break;
 	case 'c':
-		std::cout << "Change camera " << std::endl;
-		scene->changeCamera();
-		glutPostRedisplay();
-		break;
-	case 'g':
-		std::cout << "Hide/Show grid" << std::endl;
-		scene->hideShowGrid();
-		glutPostRedisplay();
-		break;
-	case 'n':
-		std::cout << "Fill/Line draw" << std::endl;
-		scene->fillLineDraw();
+		std::cout << "ACTIVATE SCALE" << std::endl;
+		scene->changeActiveTransformation(SCALE);
 		glutPostRedisplay();
 		break;
 	case 'v':
-		std::cout << "On/Off backculling" << std::endl;
-		scene->backculling();
+		std::cout << "UNATIVE ALL" << std::endl;
+		scene->changeActiveTransformation(NO_TRANS);
+		glutPostRedisplay();
 		break;
-	case 't':
-		std::cout << "On/Off texture" << std::endl;
-		scene->onOffTexture();
+	case 'z':
+		scene->applyTransformation(touche);
+		glutPostRedisplay();
 		break;
-	case 'i':
-		std::cout << "On/Off illumination" << std::endl;
-		scene->onOffIllumination();
+	case 'q':
+		scene->applyTransformation(touche);
+		glutPostRedisplay();
+		break;
+	case 's':
+		scene->applyTransformation(touche);
+		glutPostRedisplay();
+		break;
+	case 'd':
+		scene->applyTransformation(touche);
+		glutPostRedisplay();
+		break;
+	case 'l':
+		std::cout << "link" << std::endl;
+		scene->linkOtherCurve();
+		glutPostRedisplay();
+		break;
+	case '+':
+		scene->changeBezierRecursion(1);
+		glutPostRedisplay();
+		break;
+	case '-':
+		scene->changeBezierRecursion(-1);
+		glutPostRedisplay();
 		break;
 	default:
 		break;
@@ -190,12 +222,54 @@ void Input::checkKeyboardUpInputs(unsigned char  touche, int x, int y)
 
 void Input::checkMouseClicks(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN ) {
+	State sceneState = scene->getState();
+	if (sceneState == DRAW && button == GLUT_LEFT_BUTTON)
+	{
+		if (state == GLUT_DOWN)
+		{
+			mouseButtons[0] = PRESSED;
+			if (scene->hasSelectedPoint())
+			{
+				scene->unselectPoint();
+			}
+			else
+			{
+				if (scene->isPointSelected(mouseX, mouseY))
+				{
+					std::cout << "point selected" << std::endl;
+				}
+			}
 
+
+			glutPostRedisplay();
+			std::cout << "mouseButton pressed" << std::endl;
+		}
+		else
+		{
+			mouseButtons[0] = CLICKED;
+			glutPostRedisplay();
+			std::cout << "mouseButton up" << std::endl;
+		}
+
+	}
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && (sceneState == ENTER_POLYGON || sceneState == ENTER_WINDOW)) {
+		maths::Point p;
+		p.x = x;
+		p.y = y;
+		p.z = 0;
+		scene->addPoint(p);
+		//onMouse = 1;
 		glutPostRedisplay();
 	}
 
-	
+	/*if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN && scene->getState() == DRAW)
+	{
+	maths::Point p;
+	p.x = x;
+	p.y = y;
+
+	scene->cursorInPolygon(p);
+	}*/
 }
 
 void Input::checkMouseMoves(int x, int y)
@@ -208,5 +282,27 @@ void Input::checkMouseMoves(int x, int y)
 		mouseX = x;
 		mouseY = y;
 	}
+
+	mouseMove = true;
+
+	float mX = x;
+	float mY = y;
+
+	float width = scene->getWidth();
+	float height = scene->getHeight();
+
+	mX -= width / 2;
+	mX /= width / 2;
+	mY = height - mY;
+	mY -= height / 2;
+	mY /= height / 2;
+	mX = Math::round(mX);
+	mY = Math::round(mY);
+
+	mouseX = mX;
+	mouseY = mY;
+
+	if (scene->hasSelectedPoint())
+		scene->moveSelectedPoint(mouseX, mouseY);
 	
 }
