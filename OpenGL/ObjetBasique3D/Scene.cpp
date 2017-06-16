@@ -296,7 +296,7 @@ void Scene::mainLoop()
 	glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 	GLuint boolLight = glGetUniformLocation(programID, "bLight");
-	glUniform1i(boolLight, bLight);
+	glUniform1i(boolLight, true);
 	
 	// 1rst attribute buffer : vertices
 	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
@@ -546,7 +546,8 @@ void Scene::mainLoop()
 						int cptLine1 = 0;
 						int cptLine2 = 0;
 						int indice = i*size;
-						std::vector<maths::Point>* resultPoints = new std::vector<maths::Point>();
+						std::vector<maths::Point>* resultPoints = new std::vector<maths::Point>(); 
+						std::vector<maths::Point>* normals = new std::vector<maths::Point>();
 
 						for (int j = 0; j < size * 2; j++)
 						{
@@ -562,10 +563,75 @@ void Scene::mainLoop()
 							}
 						}
 
+
+
+						for (int i = 0; i<size*2; i++)
+						{
+							int ind1 = 1;
+							int ind2 = 2;
+
+								if (i == (size*2) - 2)
+								{
+									ind1 = -1;
+									ind2 = 1;
+								}
+
+								else if (i == (size*2) - 1)
+								{
+									ind1 = -2;
+									ind2 = -1;
+								}
+
+							maths::Point p = resultPoints->at(i);
+							maths::Point p2 = resultPoints->at(i + ind1);
+							maths::Point p3 = resultPoints->at(i + ind2);
+
+							maths::Point v1;
+							maths::Point v2;
+							maths::Point v3;
+
+							v1.x = p2.x - p.x;
+							v1.y = p2.y - p.y;
+							v1.z = p2.z - p.z;
+
+							v2.x = p3.x - p.x;
+							v2.y = p3.y - p.y;
+							v2.z = p3.z - p.z;
+
+							v3.x = v1.y*v2.z - v2.y*v1.z;
+							v3.y = v1.z*v2.x - v2.z*v1.x;
+							v3.z = v1.x*v2.y - v2.x*v1.y;
+
+							int norme = sqrt(v3.x*v3.x + v3.y*v3.y + v3.z*v3.z);
+
+							v3.x /= norme;
+							v3.y /= norme;
+							v3.z /= norme;
+
+							normals->push_back(v3);
+
+						}
+
+						/*auto vertexNormal_modelspace = glGetAttribLocation(programID, "vertexNormal_modelspace");
+						glEnableVertexAttribArray(vertexNormal_modelspace);
+						glVertexAttribPointer(
+							vertexNormal_modelspace,
+							3,
+							GL_FLOAT,
+							GL_FALSE,
+							0,
+							normals
+						);*/
+
+
 						glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, resultPoints->data());
 						glEnableVertexAttribArray(vertexPosition_modelspace);
 						glDrawArrays(GL_TRIANGLE_STRIP, 0, resultPoints->size());
+
 						glDisableVertexAttribArray(vertexPosition_modelspace);
+						//glDisableVertexAttribArray(vertexNormal_modelspace);
+
+
 					}
 
 

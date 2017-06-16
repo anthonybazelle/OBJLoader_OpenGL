@@ -13,16 +13,17 @@ d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(347): wa
 d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(353): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
 d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(354): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
 d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(417): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(606): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(636): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(702): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(708): warning C4305: 'initialisation' : troncation de 'double' à 'float'
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(710): warning C4305: '=' : troncation de 'double' à 'float'
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(761): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(763): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(820): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(845): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(866): warning C4018: '<' : incompatibilité signed/unsigned
-d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(897): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(605): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(672): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(702): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(768): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(774): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(776): warning C4305: '=' : troncation de 'double' à 'float'
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(827): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(829): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(886): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(911): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(932): warning C4018: '<' : incompatibilité signed/unsigned
+d:\pc\documents\github\objloader_opengl\opengl\objetbasique3d\scene.cpp(963): warning C4018: '<' : incompatibilité signed/unsigned
   ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.exe
   ObjetBasique3D.vcxproj -> D:\PC\Documents\GitHub\OBJLoader_OpenGL\OpenGL\Debug\ObjetBasique3D.pdb (Full PDB)
