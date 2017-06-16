@@ -154,6 +154,21 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 		scene->changeActiveTransformation(SCALE);
 		glutPostRedisplay();
 		break;
+	case 'u':
+		std::cout << "DRAW SIMPLE EXTRUDE" << std::endl;
+		scene->changeIntermediateState(EXTRUDE);
+		glutPostRedisplay();
+		break;
+	case 'r':
+		std::cout << "DRAW REVOLUTION EXTRUDE" << std::endl;
+		scene->changeIntermediateState(REVOLUTION);
+		glutPostRedisplay();
+		break;
+	case 'g':
+		std::cout << "DRAW GENERALIZE EXTRUDE" << std::endl;
+		scene->changeIntermediateState(GENERALIZE);
+		glutPostRedisplay();
+		break;
 	case 'v':
 		std::cout << "UNATIVE ALL" << std::endl;
 		scene->changeActiveTransformation(NO_TRANS);

@@ -75,6 +75,7 @@ class Scene
 	int pointSelected;
 	Transformation activeTransformation;
 	State state;
+	IntermediateState intermediateState;
 	int angleCamera;
 
 public:
@@ -102,8 +103,8 @@ public:
 	void rotate_point(maths::Polygon *poly, float angle);
 	void scalePoint(maths::Polygon *poly, float ratio);
 	void translatePoint(maths::Polygon *poly, float translateX, float translateY);
-
-
+	std::vector<maths::Point>* SortPointForRevolution(std::vector<maths::Point>* revoPoint, int nbPointInCurve, int degree);
+	void changeIntermediateState(IntermediateState s);
 	void changeState(State state);
 	State getState();
 	void changeActiveTransformation(Transformation trans);

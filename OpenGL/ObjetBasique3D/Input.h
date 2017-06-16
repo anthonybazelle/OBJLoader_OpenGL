@@ -19,6 +19,10 @@ enum State {
 	ENTER_POLYGON, ENTER_WINDOW, DRAW, FILL, COLOR, CAMERA3D
 };
 
+enum IntermediateState{
+	NOCHOSEN, EXTRUDE, REVOLUTION, GENERALIZE
+};
+
 class Scene;
 
 class Input
