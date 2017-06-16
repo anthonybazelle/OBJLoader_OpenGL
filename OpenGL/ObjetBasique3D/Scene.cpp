@@ -93,6 +93,7 @@ void Scene::createMenu()
 	glutAddMenuEntry("Draw simple extrude   U", 8);
 	glutAddMenuEntry("Draw revolution       R", 9);
 	glutAddMenuEntry("Draw generalize       G", 10);
+	glutAddMenuEntry("Change camera 2D/3D   J", 11);
 	/*glutAddMenuEntry("Cut               C", 3);
 	glutAddMenuEntry("Fill polygon(s)   F", 4);
 	glutAddMenuEntry("Set window        Q", 5);
@@ -149,6 +150,9 @@ void Scene::menu(int num) {
 		break;
 	case 10:
 		input->checkKeyboardInputs('g', 0, 0);
+		break;
+	case 11:
+		input->checkKeyboardInputs('j', 0, 0);
 		break;
 	default:
 		break;
@@ -209,7 +213,8 @@ float Scene::getWidth()
 
 void Scene::mainLoop()
 {
-	//camera->deplacer(input);
+	if(state==CAMERA3D)
+		camera->deplacer(input);
 
 	glViewport(0, 0, width, height);
 
@@ -293,7 +298,7 @@ void Scene::mainLoop()
 	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	glEnableVertexAttribArray(vertexPosition_modelspace);
 
-	int nbLines = 8;
+	int nbLines = 9;
 	int espace = 100;
 	int sizeGrid = nbLines * 4;
 
@@ -418,7 +423,7 @@ void Scene::mainLoop()
 	glUniform4f(colorID, color[0], color[1], color[2], color[3]);*/
 
 
-	if (state == DRAW)
+	if (state == DRAW || state==CAMERA3D)
 	{
 		if (!polygons->empty())
 		{
@@ -942,7 +947,11 @@ void Scene::changeState(State s)
 {
 	if (state == s)
 		return;
+	if (state == CAMERA3D && s != CAMERA2D)
+		return;
 	state = s;
+
+	float distY = width / 2.f * 1;
 	switch (state)
 	{
 	case ENTER_POLYGON:
@@ -950,6 +959,13 @@ void Scene::changeState(State s)
 		break;
 		break;
 	case DRAW:
+		break;
+	case CAMERA2D:
+		//fixe camera
+		camera = new Camera(this, Esgi::Vec3(0, 0, -distY), Esgi::Vec3(0, 0, 0), Esgi::Vec3(0, 1, 0));
+		break;
+	case CAMERA3D:
+		//free cam
 		break;
 	default:
 		break;

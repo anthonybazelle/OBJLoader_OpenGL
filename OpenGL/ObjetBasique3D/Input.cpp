@@ -62,6 +62,11 @@ void Input::init()
 
 bool Input::mouseHasMove()
 {
+	if (mouseMove)
+	{
+		mouseMove = false;
+		return true;
+	}
 	return mouseMove;
 }
 
@@ -203,6 +208,13 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 		scene->changeBezierRecursion(-1);
 		glutPostRedisplay();
 		break;
+	case 'j':
+		if(scene->getState()==CAMERA3D)
+			scene->changeState(CAMERA2D);
+		else
+			scene->changeState(CAMERA3D);
+		glutPostRedisplay();
+		break;
 	default:
 		break;
 	}
@@ -301,17 +313,6 @@ void Input::checkMouseClicks(int button, int state, int x, int y)
 
 void Input::checkMouseMoves(int x, int y)
 {
-	if (cameraCanMove)
-	{
-		mouseMove = true;
-		relMouseX = x - mouseX;
-		relMouseY = y - mouseY;
-		mouseX = x;
-		mouseY = y;
-	}
-
-	mouseMove = true;
-
 	float width = scene->getWidth();
 	float height = scene->getHeight();
 
@@ -319,6 +320,19 @@ void Input::checkMouseMoves(int x, int y)
 	y -= height / 2;
 	x = -x;
 	y = -y;
+
+	if (cameraCanMove)
+	{
+		mouseMove = true;
+		relMouseX = x - mouseX;
+		relMouseY = y - mouseY;
+		//relMouseX /= 10;
+		//relMouseY /= 10;
+		mouseX = x;
+		mouseY = y;
+	}
+
+	mouseMove = true;
 
 	mouseX = x;
 	mouseY = y;

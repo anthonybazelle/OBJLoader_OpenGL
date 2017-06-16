@@ -16,7 +16,7 @@ enum Transformation {
 };
 
 enum State {
-	ENTER_POLYGON, ENTER_WINDOW, DRAW, FILL, COLOR, CAMERA3D
+	ENTER_POLYGON, ENTER_WINDOW, DRAW, FILL, COLOR, CAMERA3D, CAMERA2D
 };
 
 enum IntermediateState{

@@ -16,6 +16,14 @@ m_deplacementLateral(), m_position(position), m_pointCible(pointCible), m_firstP
 	m_savPointCible = pointCible;
 	setPointcible(pointCible);
 	m_savedTheta = m_theta;
+
+	orienter(0, 0);
+	calculateRadius();
+}
+
+void Camera::reinnit()
+{
+
 	orienter(0, 0);
 	calculateRadius();
 }
@@ -118,14 +126,14 @@ void Camera::deplacer(Input* input)
 {
 	// Gestion de l'orientation
 
-	float coef = .1f;
+	float coef = 1.0f;
 
-	/*if (input->mouseHasMove() )
+	if (input->mouseHasMove() )
 	{
 		//récupérer le mouse relatif à la dernière fois je penses
-		orienter(input->getRelMouseX(), input->getRelMouseY());
+		orienter(-input->getRelMouseX(), -input->getRelMouseY());
 		input->SetMouseMove(false);
-	}*/
+	}
 		
 
 

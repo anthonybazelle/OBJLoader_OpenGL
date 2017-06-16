@@ -26,7 +26,8 @@ public:
 	void lookAt(Esgi::Mat4 &modelview);
 	void orienter(int xRel, int yRel);
 	void setState(CameraState s); 
-	void calculateRadius();
+	void calculateRadius(); 
+	void reinnit();
 	
 	~Camera();
 
@@ -51,6 +52,10 @@ private:
 	Esgi::Vec3 m_pointCible;
 	Esgi::Vec3 m_savPointCible;
 
+
+	Esgi::Vec3 m_initialPos;
+	Esgi::Vec3 m_initialTheta;
+	Esgi::Vec3 m_initialPointCible;
 };
 
 #endif
