@@ -94,6 +94,7 @@ void Scene::createMenu()
 	glutAddMenuEntry("Draw revolution       R", 9);
 	glutAddMenuEntry("Draw generalize       G", 10);
 	glutAddMenuEntry("Change camera 2D/3D   J", 11);
+	glutAddMenuEntry("Reinit                I", 12);
 	/*glutAddMenuEntry("Cut               C", 3);
 	glutAddMenuEntry("Fill polygon(s)   F", 4);
 	glutAddMenuEntry("Set window        Q", 5);
@@ -153,6 +154,9 @@ void Scene::menu(int num) {
 		break;
 	case 11:
 		input->checkKeyboardInputs('j', 0, 0);
+		break;
+	case 12:
+		input->checkKeyboardInputs('i', 0, 0);
 		break;
 	default:
 		break;
@@ -280,7 +284,7 @@ void Scene::mainLoop()
 		// Set our "myTextureSampler" sampler to user Texture Unit 0
 		glUniform1i(TextureID, 0);
 	}
-	/*glUniform3f(KaID, pObjLoader->ambiants[0], pObjLoader->ambiants[1], pObjLoader->ambiants[2]);
+	glUniform3f(KaID, pObjLoader->ambiants[0], pObjLoader->ambiants[1], pObjLoader->ambiants[2]);
 	glUniform3f(KdID, pObjLoader->diffuses[0], pObjLoader->diffuses[1], pObjLoader->diffuses[2]);
 	glUniform3f(KsID, pObjLoader->speculars[0], pObjLoader->speculars[1], pObjLoader->speculars[2]);
 
@@ -293,7 +297,7 @@ void Scene::mainLoop()
 
 	GLuint boolLight = glGetUniformLocation(programID, "bLight");
 	glUniform1i(boolLight, bLight);
-	*/
+	
 	// 1rst attribute buffer : vertices
 	auto vertexPosition_modelspace = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	glEnableVertexAttribArray(vertexPosition_modelspace);
@@ -375,26 +379,9 @@ void Scene::mainLoop()
 	GL_FALSE,                         
 	0,                                
 	objUvs.data()                         
-	);
-
-	// 3rd attribute buffer : normals
-	auto vertexNormal_modelspace = glGetAttribLocation(programID, "vertexNormal_modelspace");
-	glEnableVertexAttribArray(vertexNormal_modelspace);
-	//glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glVertexAttribPointer(
-	vertexNormal_modelspace,                                
-	3,                                
-	GL_FLOAT,                         
-	GL_FALSE,                         
-	0,                                
-	objNormals.data()                    
 	);*/
 
-	// Draw the triangles !
-	/*if(bLine)
-	glDrawArrays(GL_LINES, 0, objVertices.size());
-	else
-	glDrawArrays(GL_TRIANGLES, 0, objVertices.size() );*/
+	
 
 	glDrawArrays(GL_LINES, 0, sizeGrid);
 
@@ -497,92 +484,115 @@ void Scene::mainLoop()
 					}
 				}
 				// On vérifie que l'on a bien une courbe au moins de dessinée en plus de l'etat à vérifier
-				else if(this->intermediateState == EXTRUDE && polygons->size() > 0)
+				else if (this->intermediateState == EXTRUDE && polygons->size() > 0)
 				{
 					const maths::Point *bezierPointsExtrude = polygons->at(i).getBezierPoints()->data();
-					std::vector<maths::Point>* extrudePoints = new std::vector<maths::Point>();
-
-					for(int indexPoint = 0; indexPoint < polygons->at(i).getBezierPoints()->size(); indexPoint++)
+					int size = polygons->at(i).getBezierPoints()->size();
+					maths::Point *bezierPointsExtrude2;
+					bezierPointsExtrude2 = (maths::Point *) malloc( size* sizeof(maths::Point)*2);
+					
+					int cpt = 0;
+					for (int i = 0; i < size; i++)
 					{
-						extrudePoints->push_back(bezierPointsExtrude[indexPoint]);
-						maths::Point offsetPoint = bezierPoints[indexPoint];
-						// A paramétrer
-						offsetPoint.x += 0.4f;
-						extrudePoints->push_back(offsetPoint);
+						maths::Point p1;
+						p1.x = bezierPointsExtrude[i].x;
+						p1.y = bezierPointsExtrude[i].y;
+						p1.z = bezierPointsExtrude[i].z - 100;
+						bezierPointsExtrude2[cpt] = p1;
+						cpt++; 
+						maths::Point p2;
+						p2.x = bezierPointsExtrude[i].x;
+						p2.y = bezierPointsExtrude[i].y;
+						p2.z = bezierPointsExtrude[i].z;
+						bezierPointsExtrude2[cpt] = p2;
+						cpt++;
 					}
-					// Traitement OpenGL
 
-					unsigned int extrudeSize = extrudePoints->size();
-
-					//glUniform4f(colorID, 0.0,0.0,1.0,1.0);
-
-					glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, extrudePoints);
+					glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, bezierPointsExtrude2);
 					glEnableVertexAttribArray(vertexPosition_modelspace);
-
-					glPointSize(0);
-
-					glDrawArrays(GL_TRIANGLE_STRIP, 0, extrudeSize);
+					glDrawArrays(GL_TRIANGLE_STRIP, 0, size*2);
 					glDisableVertexAttribArray(vertexPosition_modelspace);
+
 				}
 				// Même chose
-				else if(this->intermediateState == REVOLUTION && polygons->size() > 0)
+				else if (this->intermediateState == REVOLUTION && polygons->size() > 0)
 				{
+					int nbCourbes = 10;
 					const maths::Point *bezierPointsRevo = polygons->at(i).getBezierPoints()->data();
-					int angleParcourt = 30;
 
-					// revolutionPoints corresponds à l'ensemble des points de toutes les courbesde la revolution sur 360 degrée
-					std::vector<maths::Point>* revolutionPoints = new std::vector<maths::Point>();
+					int size = polygons->at(i).getBezierPoints()->size();
+					maths::Point *bezierPointsRevo2;
+					bezierPointsRevo2 = (maths::Point *) malloc(size * sizeof(maths::Point) *nbCourbes);
 
-					for(int indexPoint = 0; indexPoint < polygons->at(i).getBezierPoints()->size(); indexPoint++)
+					for (int j = 0; j < nbCourbes; j++)
 					{
-						revolutionPoints->push_back(bezierPointsRevo[indexPoint]);
-					}
-
-					/*
-					newX = cos(angleParcourt)*oldX;
-					newY = sin(angleParcourt)*oldX;
-					newZ=oldY;
-					*/
-
-					unsigned int nbPointPerCurve = revolutionPoints->size();
-
-					// On aura donc ici 12 courbes autour d'un axe pour une valeur de décalage en degrée de 30
-					for(int nbOffset = 0; nbOffset * angleParcourt < 330; nbOffset++)
-					{
-						// On récupère les points de la derniere courbe
-						
-						//for(std::vector<maths::Point>::iterator it = revolutionPoints->end() - nbPointPerCurve; it != revolutionPoints->end(); it++)
-						for(int ind = revolutionPoints->size() - nbPointPerCurve; ind < nbPointPerCurve * (nbOffset + 1); ind++)
+						for (int i = 0; i < size; i++)
 						{
-							float newX = ((float)cos(angleParcourt)) * revolutionPoints->at(ind).x;
-							float newY = ((float)sin(angleParcourt)) * revolutionPoints->at(ind).x;
-							float newZ = revolutionPoints->at(ind).y;
+							float newX = ((float)cos(.1*j)) *bezierPointsRevo[i].x;
+							float newY = ((float)sin(.1* j)) * bezierPointsRevo[i].x;
+							float newZ = bezierPointsRevo[i].y;
 
 							maths::Point newPoint;
 							newPoint.x = newX;
-							newPoint.y = newY;
-							newPoint.z = newZ;
+							newPoint.y = newZ;
+							newPoint.z = newY;
 
-							revolutionPoints->push_back(newPoint);
+							bezierPointsRevo2[j*size + i] = newPoint;
 						}
 					}
 
-					//nbPoint apres tri = ((nbCourbe - 2) * 2 + 2) * nbPoint par courbe
+					for (int i = 0; i < nbCourbes - 1; i++)
+					{
+						int cptLine1 = 0;
+						int cptLine2 = 0;
+						int indice = i*size;
+						std::vector<maths::Point>* resultPoints = new std::vector<maths::Point>();
 
-					std::vector<maths::Point>* revoPoints = this->SortPointForRevolution(revolutionPoints, nbPointPerCurve, angleParcourt);
+						for (int j = 0; j < size * 2; j++)
+						{
+							if (j % 2 == 0)
+							{
+								resultPoints->push_back(bezierPointsRevo2[indice+cptLine1]);
+								cptLine1++;
+							}
+							else
+							{
+								resultPoints->push_back(bezierPointsRevo2[indice+size+ cptLine2]);
+								cptLine2++;
+							}
+						}
 
-					unsigned int revolutionSize = revoPoints->size();
+						glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, resultPoints->data());
+						glEnableVertexAttribArray(vertexPosition_modelspace);
+						glDrawArrays(GL_TRIANGLE_STRIP, 0, resultPoints->size());
+						glDisableVertexAttribArray(vertexPosition_modelspace);
+					}
 
-					glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, revoPoints);
-					glEnableVertexAttribArray(vertexPosition_modelspace);
 
-					glPointSize(0);
+					// 3rd attribute buffer : normals
 
-					glDrawArrays(GL_TRIANGLE_STRIP, 0, revolutionSize);
-					glDisableVertexAttribArray(vertexPosition_modelspace);
+					/*std::vector<maths::Point>* normals = new std::vector<maths::Point>();
+					for (int i = 0; i < size*nbCourbes-2; i++)
+					{
+						maths::Point p;
+					}
+
+					auto vertexNormal_modelspace = glGetAttribLocation(programID, "vertexNormal_modelspace");
+					glEnableVertexAttribArray(vertexNormal_modelspace);
+					glVertexAttribPointer(
+					vertexNormal_modelspace,
+					3,
+					GL_FLOAT,
+					GL_FALSE,
+					0,
+						normals
+					);*/
+
+					
+					
 				}
 				// On vérifie que l'on a deux courbes de bezier de dessinée
-				else if(this->intermediateState == GENERALIZE && polygons->size() == 2)
+				else if (this->intermediateState == GENERALIZE && polygons->size() == 2)
 				{
 
 				}
@@ -625,6 +635,7 @@ void Scene::mainLoop()
 
 		for (int i = 0; i < size; i++)
 		{
+
 			glVertexAttribPointer(vertexPosition_modelspace, 3, GL_FLOAT, GL_FALSE, 0, &points[i]);
 			glEnableVertexAttribArray(vertexPosition_modelspace);
 
@@ -640,34 +651,18 @@ void Scene::mainLoop()
 	glutSwapBuffers();
 }
 
-std::vector<maths::Point>* Scene::SortPointForRevolution(std::vector<maths::Point>* revoPoint, int nbPointInCurve, int degree)
+std::vector<maths::Point>* Scene::SortPointForRevolution(std::vector<maths::Point>* revoPoint, int nbPointInCurve, int length)
 {
 	std::vector<maths::Point>* resultPoints = new std::vector<maths::Point>();
 
-	int nbCurves = revoPoint->size() / nbPointInCurve;
-
-
-	// TEST 1
-	/*
-	for (int indexCurve = 0; indexCurve < revoPoint->size() / nbPointInCurve - 1; indexCurve++)
-	{
-		for(int indexC1 = indexCurve * nbPointInCurve, indexC2 = (indexCurve * nbPointInCurve + nbPointInCurve) - 1; indexC1 < (indexCurve + 1) * nbPointInCurve; indexC1++, indexC2++)
-		{
-			resultPoints->push_back(revoPoint->at(indexC1));
-			resultPoints->push_back(revoPoint->at(indexC2));
-		}
-	}*/
-
 	// TEST 2
-	
-	int w = nbCurves;
+
+	int w = length;
 	int h = nbPointInCurve;
-	int *tab1;
-	int *tab2;
 
 	for (int i = 0; i < w - 1; i++)
 	{
-		int indice = w*h;
+		int indice = w*h-1;
 		int cptLine1 = 0;
 		int cptLine2 = 0;
 
@@ -675,19 +670,18 @@ std::vector<maths::Point>* Scene::SortPointForRevolution(std::vector<maths::Poin
 		{
 			if (j % 2 == 0)
 			{
-				resultPoints->push_back(revoPoint->at(indice + cptLine1));
+				resultPoints->push_back(revoPoint->at(cptLine1));
 				cptLine1++;
 			}
 			else
 			{
-				resultPoints->push_back(revoPoint->at(indice + h+cptLine2));
+				resultPoints->push_back(revoPoint->at(h - 1 + cptLine2));
 				cptLine2++;
 			}
 		}
+	
 	}
-	
 
-	
 	return resultPoints;
 }
 
@@ -977,7 +971,6 @@ void Scene::changeIntermediateState(IntermediateState s)
 	if (this->intermediateState == s)
 		return;
 	this->intermediateState = s;
-	this->state = DRAW;
 }
 
 State Scene::getState()

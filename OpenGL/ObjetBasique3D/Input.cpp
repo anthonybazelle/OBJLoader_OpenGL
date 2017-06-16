@@ -174,6 +174,11 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 		scene->changeIntermediateState(GENERALIZE);
 		glutPostRedisplay();
 		break;
+	case 'i':
+		std::cout << "reinnit" << std::endl;
+		scene->changeIntermediateState(NOCHOSEN);
+		glutPostRedisplay();
+		break;
 	case 'v':
 		std::cout << "UNATIVE ALL" << std::endl;
 		scene->changeActiveTransformation(NO_TRANS);
@@ -212,7 +217,13 @@ void Input::checkKeyboardInputs(unsigned char  touche, int x, int y)
 		if(scene->getState()==CAMERA3D)
 			scene->changeState(CAMERA2D);
 		else
+		{
 			scene->changeState(CAMERA3D);
+			mouseX = relMouseX; 
+			mouseY = relMouseY;
+			relMouseX = relMouseY = 0;
+		}
+			
 		glutPostRedisplay();
 		break;
 	default:

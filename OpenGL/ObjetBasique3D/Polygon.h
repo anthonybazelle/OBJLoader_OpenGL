@@ -30,6 +30,7 @@ namespace maths
 		std::vector<bool> *visibility;
 		bool sensTrigo;
 		std::vector<maths::Point> *bezierPoints;
+		std::vector<maths::Point> *extrude;
 		maths::Polygon *outPolygon;
 		maths::Polygon *inPolygon;
 		int bezierRecursion;
